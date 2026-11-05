@@ -1,0 +1,22 @@
+# 複製為 config/settings.yaml 後修改。路徑相對專案根目錄。
+vault_dir: assets_vault
+library_path: data/library/library.json
+exports_dir: data/exports
+cache_dir: data/cache
+
+# heuristic：不連模型，只做技術預檢。
+# openai：呼叫本機或遠端的 OpenAI 相容視覺端點。
+provider: heuristic
+openai_base_url: http://127.0.0.1:8000/v1
+openai_model: Qwen/Qwen3.5-9B
+openai_api_key: EMPTY
+request_timeout_s: 180
+vision_max_edge: 1280
+# Qwen3.5 預設會先輸出思考過程。字幕任務應關掉，避免 JSON 被截斷。
+send_disable_thinking: true
+
+# 相鄰兩張有拍攝時間的照片，間隔超過這個小時數就另起一段行程。
+trip_gap_hours: 72
+# 0 表示不用距離切開行程，也不把座標翻成地名。
+trip_distance_km: 0
+frame_count: 4

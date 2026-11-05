@@ -1,0 +1,16 @@
+---
+description: Wanderlens 的開發邊界與目錄約定
+alwaysApply: true
+---
+
+# Wanderlens
+
+- 使用者面向的說明使用繁體中文書面語。
+- 原始照片、影片、模型權重、`.env` 與 `config/settings.yaml` 不得提交。
+- 新模型只寫進 `catalog/open_source_models.yaml`。描述步驟只透過 `heuristic` 與 OpenAI 相容端點。
+- 技術預檢不得編成看起來像看過畫面的文案。
+- 公開匯出必須移除定位資訊，且不得把座標寫進社群草稿或販售清單。
+- 不要由像素推測拍攝地點，也不要建立人臉身分庫。人臉相關程式只可做遮罩。
+- 不要加入瀏覽器自動登入、指紋瀏覽器，或模擬互動來經營社群帳號。
+- 販售包必須經過 `cleared_for_sale`，並預設排除可辨識人物與敏感內容。
+- `recommended` 只能標在 `commercial_use: allowed` 且現有描述流程接得上的項目。

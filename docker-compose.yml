@@ -1,0 +1,15 @@
+services:
+  pipeline:
+    build: .
+    image: wanderlens-agent:local
+    working_dir: /workspace
+    volumes:
+      - ./assets_vault:/workspace/assets_vault
+      - ./data:/workspace/data
+      - ./catalog:/workspace/catalog
+      - ./config:/workspace/config
+      - ./src:/workspace/src
+    environment:
+      PYTHONPATH: /workspace/src
+    entrypoint: ["python", "-m", "wanderlens"]
+    command: ["models", "list"]

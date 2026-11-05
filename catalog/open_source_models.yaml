@@ -1,0 +1,554 @@
+schema_version: 1
+updated: "2026-11-05"
+license_disclaimer: >
+  commercial_use 只是整理模型卡與專案授權時的閱讀筆記，不是法律意見。
+  正式販售或公開發佈前，請再核對當時的模型卡、權重授權與使用條款。
+  顯存數字是單張消費級顯示卡的量級估計，實際取決於量化、上下文長度與影像大小。
+models:
+  - id: qwen3.5-9b
+    name: Qwen3.5-9B
+    kind: model
+    parameters: "9B"
+    roles: [vision_language, video_understanding, text_generation]
+    huggingface: Qwen/Qwen3.5-9B
+    license: Apache-2.0
+    commercial_use: allowed
+    status: recommended
+    server_api: openai-chat
+    min_vram_gb_estimate: 12
+    runtime: [sglang, vllm, transformers]
+    notes: >
+      單機預設選項。同一權重可讀照片與影片，也能寫繁體中文。
+      16GB 顯示卡請用 4-bit 或 8-bit，並把上下文降到約 8192；24GB 較從容。
+      描述行程照片時請關閉 thinking，避免思考過程吃掉輸出長度。
+
+  - id: qwen3.5-4b
+    name: Qwen3.5-4B
+    kind: model
+    parameters: "4B"
+    roles: [vision_language, video_understanding, text_generation]
+    huggingface: Qwen/Qwen3.5-4B
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 8
+    runtime: [sglang, vllm, transformers]
+    notes: 顯存較少時的同系列選擇，介面與 9B 相同。
+
+  - id: qwen3-vl-8b-instruct
+    name: Qwen3-VL-8B-Instruct
+    kind: model
+    parameters: "8B"
+    roles: [vision_language, video_understanding]
+    huggingface: Qwen/Qwen3-VL-8B-Instruct
+    github: https://github.com/QwenLM/Qwen3-VL
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 12
+    runtime: [vllm, sglang, transformers]
+    notes: >
+      上一代專用視覺語言模型，文件與社群範例較多。
+      只用來描述畫面；不要用來辨識或建檔特定人物。
+
+  - id: qwen3-vl-4b-instruct
+    name: Qwen3-VL-4B-Instruct
+    kind: model
+    parameters: "4B"
+    roles: [vision_language, video_understanding]
+    huggingface: Qwen/Qwen3-VL-4B-Instruct
+    github: https://github.com/QwenLM/Qwen3-VL
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 8
+    runtime: [vllm, sglang, transformers]
+    notes: Qwen3-VL 的較小 Instruct 權重，適合先跑通大量照片。
+
+  - id: qwen2.5-vl-7b-instruct
+    name: Qwen2.5-VL-7B-Instruct
+    kind: model
+    parameters: "7B"
+    roles: [vision_language, video_understanding]
+    huggingface: Qwen/Qwen2.5-VL-7B-Instruct
+    github: https://github.com/QwenLM/Qwen2.5-VL
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 12
+    runtime: [vllm, sglang, transformers]
+    notes: 穩定的前代權重。其他尺寸的授權不一定相同，換尺寸時要重看模型卡。
+
+  - id: internvl3.5-8b
+    name: InternVL3.5-8B
+    kind: model
+    parameters: "8.5B"
+    roles: [vision_language]
+    huggingface: OpenGVLab/InternVL3_5-8B
+    github: https://github.com/OpenGVLab/InternVL
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 12
+    runtime: [transformers, vllm]
+    notes: >
+      細節與文件理解強。Transformers 標準格式另見 OpenGVLab/InternVL3_5-8B-HF，
+      指令微調中間權重另見 OpenGVLab/InternVL3_5-8B-Instruct。
+      只要服務提供 OpenAI chat completions，這個專案就不必綁定其中一種格式。
+
+  - id: internvl3.5-4b
+    name: InternVL3.5-4B
+    kind: model
+    parameters: "4.7B"
+    roles: [vision_language]
+    huggingface: OpenGVLab/InternVL3_5-4B
+    github: https://github.com/OpenGVLab/InternVL
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 8
+    runtime: [transformers, vllm]
+    notes: 較小的 InternVL3.5，可做第一輪篩片。HF 格式為 OpenGVLab/InternVL3_5-4B-HF。
+
+  - id: internvl3.5-30b-a3b
+    name: InternVL3.5-30B-A3B
+    kind: model
+    parameters: 30B-A3B
+    roles: [vision_language]
+    huggingface: OpenGVLab/InternVL3_5-30B-A3B
+    github: https://github.com/OpenGVLab/InternVL
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 24
+    runtime: [transformers, vllm]
+    notes: MoE，總參數量較大、啟動參數量較小。24GB 以上再考慮，並優先使用量化權重。
+
+  - id: gemma-4-e4b-it
+    name: Gemma 4 E4B Instruct
+    kind: model
+    parameters: E4B
+    roles: [vision_language, video_understanding]
+    huggingface: google/gemma-4-E4B-it
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 8
+    runtime: [transformers, vllm, ollama]
+    notes: Gemma 4 的 E 系列可接受影像；E4B 亦能接受音訊。適合作為邊界設備上的備援。
+
+  - id: gemma-4-e2b-it
+    name: Gemma 4 E2B Instruct
+    kind: model
+    parameters: E2B
+    roles: [vision_language]
+    huggingface: google/gemma-4-E2B-it
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 6
+    runtime: [transformers, ollama]
+    notes: 更小的 Gemma 4 指令權重，用來確認流程，不建議作為最終文案模型。
+
+  - id: minicpm-v-4.6
+    name: MiniCPM-V 4.6
+    kind: model
+    parameters: "1.3B"
+    roles: [vision_language, video_understanding]
+    huggingface: openbmb/MiniCPM-V-4.6
+    github: https://github.com/OpenBMB/MiniCPM-V
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 4
+    runtime: [transformers]
+    notes: 邊緣裝置與大量粗篩用。精細文案仍建議改走 Qwen3.5 或 InternVL。
+
+  - id: molmo2-8b
+    name: Molmo2-8B
+    kind: model
+    parameters: "8B"
+    roles: [vision_language, video_understanding]
+    huggingface: allenai/Molmo2-8B
+    github: https://github.com/allenai/molmo
+    license: Apache-2.0
+    commercial_use: allowed
+    status: alternate
+    server_api: openai-chat
+    min_vram_gb_estimate: 12
+    runtime: [transformers]
+    notes: >
+      訓練資料公開程度高，擅長計數、短片與畫面定位。
+      之後若要裁切主體可以用它的指向結果；不要用來辨識身分。
+
+  - id: florence-2-large-ft
+    name: Florence-2-large-ft
+    kind: model
+    parameters: "0.77B"
+    roles: [vision_language, ocr]
+    huggingface: microsoft/Florence-2-large-ft
+    github: https://github.com/microsoft/Florence
+    license: MIT
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 4
+    runtime: [transformers]
+    notes: >
+      輕量多任務模型，可做簡短字幕、物件與 OCR。不是聊天模型，
+      因此尚未接到目前的 OpenAI 相容描述器。適合日後作為每張照片的便宜前處理。
+
+  - id: florence-2-large
+    name: Florence-2-large
+    kind: model
+    parameters: "0.77B"
+    roles: [vision_language, ocr]
+    huggingface: microsoft/Florence-2-large
+    github: https://github.com/microsoft/Florence
+    license: MIT
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 4
+    runtime: [transformers]
+    notes: Florence-2 的預訓練權重。一般標註請優先用 florence-2-large-ft。
+
+  - id: internvideo3-8b
+    name: InternVideo3-8B-Instruct
+    kind: model
+    parameters: "8B"
+    roles: [video_understanding]
+    huggingface: yanziang/InternVideo3-8B-Instruct
+    github: https://github.com/OpenGVLab/InternVideo
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 16
+    runtime: [transformers]
+    notes: >
+      面向長影片與多步理解。模型卡範例亦寫到 OpenGVLab/InternVideo3-8B-Instruct。
+      本版仍以 ffmpeg 抽幀後送交視覺語言模型；這個權重留待長片流程再接。
+
+  - id: transnetv2
+    name: TransNetV2
+    kind: model
+    parameters: small
+    roles: [shot_detection]
+    github: https://github.com/soCzech/TransNetV2
+    license: MIT
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 2
+    notes: 偵測鏡頭切換。多年影片應先切成鏡頭，再決定哪些畫面值得送進視覺模型。
+
+  - id: pyscenedetect
+    name: PySceneDetect
+    kind: tool
+    roles: [shot_detection]
+    github: https://github.com/Breakthrough/PySceneDetect
+    license: BSD-3-Clause
+    commercial_use: allowed
+    status: catalog-only
+    server_api: none
+    notes: 不需要顯示卡的鏡頭切分工具，適合作為 TransNetV2 之前的基線。授權檔請以倉庫為準。
+
+  - id: whisper-large-v3
+    name: Whisper large-v3
+    kind: model
+    parameters: "1.5B"
+    roles: [speech_transcription]
+    huggingface: openai/whisper-large-v3
+    github: https://github.com/openai/whisper
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 10
+    runtime: [transformers, faster-whisper]
+    notes: 把影片裡真正有人說話的片段轉成文字，再交給文案步驟。風聲與環境聲不必強行轉錄。
+
+  - id: whisper-large-v3-turbo
+    name: Whisper large-v3-turbo
+    kind: model
+    parameters: "0.8B"
+    roles: [speech_transcription]
+    huggingface: openai/whisper-large-v3-turbo
+    github: https://github.com/openai/whisper
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 6
+    runtime: [transformers, faster-whisper]
+    notes: large-v3 的較快版本，大量旅行影片建議先用它。
+
+  - id: faster-whisper
+    name: faster-whisper
+    kind: runtime
+    roles: [speech_transcription]
+    github: https://github.com/SYSTRAN/faster-whisper
+    license: MIT
+    commercial_use: allowed
+    status: catalog-only
+    server_api: none
+    notes: CTranslate2 推論引擎，不是另一套語音模型。權重仍用 Whisper，並遵循該權重的授權。
+
+  - id: siglip2-so400m
+    name: SigLIP 2 So400m
+    kind: model
+    parameters: "400M"
+    roles: [image_embedding]
+    huggingface: google/siglip2-so400m-patch14-384
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 4
+    runtime: [transformers]
+    notes: 圖文同一個向量空間，之後做「以文字找照片」時優先用它，而不是一般文字搜尋。
+
+  - id: siglip2-base
+    name: SigLIP 2 Base
+    kind: model
+    parameters: "86M"
+    roles: [image_embedding]
+    huggingface: google/siglip2-base-patch16-256
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 2
+    runtime: [transformers]
+    notes: 較小的 SigLIP 2，適合先把整個圖庫編成索引，再決定是否改用 So400m。
+
+  - id: dinov2-large
+    name: DINOv2 large
+    kind: model
+    parameters: "300M"
+    roles: [image_embedding]
+    huggingface: facebook/dinov2-large
+    github: https://github.com/facebookresearch/dinov2
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 4
+    runtime: [transformers]
+    notes: 純視覺特徵，沒有文字。適合找構圖、色彩與主體形狀相近的照片，不適合文字查詢。
+
+  - id: dinov2-base
+    name: DINOv2 base
+    kind: model
+    parameters: "86M"
+    roles: [image_embedding]
+    huggingface: facebook/dinov2-base
+    github: https://github.com/facebookresearch/dinov2
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 2
+    runtime: [transformers]
+    notes: DINOv2 的較小權重，可與 large 先做小樣本比較再決定。
+
+  - id: openclip-vit-g-14
+    name: OpenCLIP ViT-g-14 LAION-2B
+    kind: model
+    parameters: ViT-g-14
+    roles: [image_embedding]
+    huggingface: laion/CLIP-ViT-g-14-laion2B-s12B-b42K
+    github: https://github.com/mlfoundations/open_clip
+    license: MIT
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 6
+    runtime: [open_clip]
+    notes: 成熟的圖文特徵基線。新的索引建議先比較 SigLIP 2，再決定是否保留這組權重。
+
+  - id: jina-clip-v2
+    name: Jina CLIP v2
+    kind: model
+    parameters: ViT
+    roles: [image_embedding]
+    huggingface: jinaai/jina-clip-v2
+    license: CC-BY-NC-4.0
+    commercial_use: disallowed
+    status: restricted
+    server_api: custom
+    min_vram_gb_estimate: 4
+    notes: 多語圖文特徵不錯，但權重為非商業授權。販售或商業帳號不要使用。
+
+  - id: q-align
+    name: Q-Align / OneAlign
+    kind: model
+    parameters: "7B 級"
+    roles: [aesthetic_quality]
+    huggingface: q-future/one-align
+    github: https://github.com/Q-Future/Q-Align
+    license: 見倉庫
+    commercial_use: unknown
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 16
+    notes: 可同時評影像品質與美學，也有影片分數。倉庫授權不是清楚的 Apache/MIT，商用前必須讀模型卡。
+
+  - id: pyiqa
+    name: IQA-PyTorch
+    kind: tool
+    roles: [aesthetic_quality]
+    github: https://github.com/chaofengc/IQA-PyTorch
+    license: 見倉庫與各權重
+    commercial_use: unknown
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 4
+    notes: >
+      一個工具箱收錄 MUSIQ、TOPIQ、CLIP-IQA、NIMA，以及 2026 年加入的 Q-ReAlign
+      （約 0.8B、4B、9B）。各指標權重的授權並不相同，不能整包視為可商用。
+
+  - id: laion-aesthetic-predictor
+    name: LAION Aesthetic Predictor V1
+    kind: model
+    parameters: linear
+    roles: [aesthetic_quality]
+    github: https://github.com/LAION-AI/aesthetic-predictor
+    weights: https://github.com/LAION-AI/aesthetic-predictor/raw/main/sa_0_4_vit_l_14_linear.pth
+    license: MIT
+    commercial_use: conditional
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 4
+    notes: >
+      這是接在 CLIP ViT-L/14 特徵上的線性層，本身為 MIT。
+      實際使用還須遵守所搭配 CLIP 權重的授權，因此標成 conditional。
+
+  - id: realesrgan-x4plus
+    name: Real-ESRGAN x4plus
+    kind: model
+    parameters: RRDB
+    roles: [image_restoration]
+    github: https://github.com/xinntao/Real-ESRGAN
+    weights: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+    license: BSD-3-Clause
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 4
+    notes: >
+      只對已入選的少數照片做放大，不要把整個圖庫都放大。
+      若產品使用超解析度，銷售頁必須如實說明，不要寫成原機原生解析度。
+      權重連結失效時，改從該 GitHub Releases 取得 RealESRGAN_x4plus.pth。
+
+  - id: birefnet
+    name: BiRefNet
+    kind: model
+    parameters: segmentation
+    roles: [matting]
+    huggingface: ZhengPeng7/BiRefNet
+    github: https://github.com/ZhengPeng7/BiRefNet
+    license: MIT
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 8
+    runtime: [transformers]
+    notes: 高解析去背。風景與旅行紀實通常用不到；只有主體需要獨立成商品圖時再考慮。
+
+  - id: qwen3-8b
+    name: Qwen3-8B
+    kind: model
+    parameters: "8B"
+    roles: [text_generation]
+    huggingface: Qwen/Qwen3-8B
+    github: https://github.com/QwenLM/Qwen3
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: openai-chat
+    min_vram_gb_estimate: 8
+    runtime: [vllm, sglang, transformers]
+    notes: 純文字模型，不能當作 describe 的視覺模型。日後可用來潤飾已經看過圖的草稿。
+
+  - id: qwen3-4b
+    name: Qwen3-4B
+    kind: model
+    parameters: "4B"
+    roles: [text_generation]
+    huggingface: Qwen/Qwen3-4B
+    github: https://github.com/QwenLM/Qwen3
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: openai-chat
+    min_vram_gb_estimate: 6
+    runtime: [vllm, sglang, transformers]
+    notes: 較小的純文字 Qwen3，用途與 8B 相同，顯存占用較低。
+
+  - id: musicgen-medium
+    name: MusicGen medium
+    kind: model
+    parameters: "1.5B"
+    roles: [audio_generation]
+    huggingface: facebook/musicgen-medium
+    github: https://github.com/facebookresearch/audiocraft
+    license: CC-BY-NC-4.0
+    commercial_use: disallowed
+    status: restricted
+    server_api: custom
+    min_vram_gb_estimate: 8
+    notes: >
+      程式碼為 MIT，權重為 CC-BY-NC-4.0。不可用於販售產品或商業帳號的配樂。
+      本專案不把生成音樂放進草稿或商品。
+
+  - id: stable-audio-open-1.0
+    name: Stable Audio Open 1.0
+    kind: model
+    parameters: DiT
+    roles: [audio_generation]
+    huggingface: stabilityai/stable-audio-open-1.0
+    license: Stability-AI-Community
+    commercial_use: conditional
+    status: restricted
+    server_api: custom
+    min_vram_gb_estimate: 8
+    notes: >
+      Stability AI Community License 對研究、非商業，以及低於其營收門檻的商業使用有不同條件。
+      預設不啟用。若日後要為影片配環境聲，先讀完該授權，並在商品頁揭露合成音訊。
+
+  - id: paddleocr
+    name: PaddleOCR
+    kind: tool
+    roles: [ocr]
+    github: https://github.com/PaddlePaddle/PaddleOCR
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 4
+    notes: 讀取路標、菜單與車票上的文字，補充視覺模型的 OCR。它不負責判斷一張照片好不好看。
+
+  - id: mediapipe-face-detection
+    name: MediaPipe Face Detection
+    kind: tool
+    roles: [privacy_redaction]
+    github: https://github.com/google-ai-edge/mediapipe
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: none
+    notes: >
+      只計劃用來偵測人臉並做遮罩。禁止用於身分識別、人臉搜尋或建立人物資料庫。
+      有可辨識人物的照片，預設不能進入販售包。
