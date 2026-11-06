@@ -1,4 +1,4 @@
-import { loadSnapshot, asset } from "./api.js";
+import { loadSnapshot, asset, capturePhoneKey } from "./api.js";
 import { h } from "./dom.js";
 import { STATS, clock } from "./format.js";
 import { renderOverview } from "./views/overview.js";
@@ -84,6 +84,11 @@ document.querySelectorAll("[data-view]").forEach((button) => {
   });
 });
 markNav();
+
+if (capturePhoneKey() && !window.matchMedia("(display-mode: standalone)").matches) {
+  const hint = document.querySelector("#install-hint");
+  if (hint) hint.hidden = false;
+}
 
 document.querySelector("#refresh").addEventListener("click", () => tick(true));
 document.querySelector("#live-toggle").addEventListener("click", () => {

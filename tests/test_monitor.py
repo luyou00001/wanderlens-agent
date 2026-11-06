@@ -91,7 +91,15 @@ def test_monitor_hides_coordinates_and_serves_the_page(tmp_path):
         assert 'type="module"' in html
         assert 'src="js/main.js"' in html
         assert 'href="css/tokens.css"' in html
+        assert "apple-mobile-web-app-capable" in html
+        assert "manifest.webmanifest" in html
         assert "data-stage" in html
+        _status, manifest_type, manifest = _read(port, "/manifest.webmanifest")
+        assert "json" in manifest_type
+        assert b"Wanderlens" in manifest
+        _status, icon_type, icon = _read(port, "/icons/apple-touch-icon.png")
+        assert "image/png" in icon_type
+        assert icon.startswith(b"\x89PNG")
         assert "22.291667" not in html
 
         _status, css_type, css = _read(port, "/css/tokens.css")
@@ -127,6 +135,28 @@ def test_monitor_hides_coordinates_and_serves_the_page(tmp_path):
     finally:
         server.shutdown()
         server.server_close()
+
+
+def test_phone_access_requires_the_printed_key():
+    from wanderlens.monitor import access_granted, load_or_create_token
+
+    key = "secret-token-value"
+    assert access_granted("127.0.0.1", "", "", "", key) is True
+    assert access_granted("192.168.1.20", "", "", "", key) is False
+    assert access_granted("192.168.1.20", "", key, "", key) is True
+    assert access_granted("192.168.1.20", key, "", "", key) is True
+    assert access_granted("192.168.1.20", "", "", key, key) is True
+    assert access_granted("10.0.0.8", "", "wrong-token-value", "", key) is False
+    assert access_granted("192.168.1.20", "", "", "", None) is True
+
+
+def test_phone_token_is_reused(tmp_path):
+    from wanderlens.monitor import load_or_create_token
+
+    path = tmp_path / "monitor.token"
+    first = load_or_create_token(path)
+    assert load_or_create_token(path) == first
+    assert path.read_text(encoding="utf-8").strip() == first
 
 
 def test_monitor_opens_before_ingest(tmp_path):

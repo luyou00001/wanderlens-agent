@@ -23,6 +23,8 @@
 
 網址列的 `#overview`、`#library`、`#models`、`#activity` 會打開對應分頁。
 
+寬度 800px 以下時，側欄改成貼在底部的導覽，並留出 `safe-area-inset`。這是給 iPhone 主畫面使用的。桌面版仍是左側欄。
+
 ## 資料從哪裡來
 
 同網域的 JSON：

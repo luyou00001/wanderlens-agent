@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import hmac
 import json
-import sys
+import re
+import secrets
+import socket
 import traceback
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -32,27 +35,38 @@ _MIME = {
     ".js": "text/javascript; charset=utf-8",
     ".svg": "image/svg+xml",
     ".json": "application/json; charset=utf-8",
+    ".webmanifest": "application/manifest+json; charset=utf-8",
+    ".png": "image/png",
     ".txt": "text/plain; charset=utf-8",
     ".md": "text/markdown; charset=utf-8",
 }
+_TOKEN_NAME = "wanderlens_ui"
+_TOKEN_PATTERN = re.compile(r"^[A-Za-z0-9_-]{16,128}$")
 
 
 class MonitorServer(ThreadingHTTPServer):
     allow_reuse_address = True
 
 
-def serve_monitor(settings: Settings, host: str = "127.0.0.1", port: int = 8765) -> None:
+def serve_monitor(settings: Settings, host: str = "127.0.0.1", port: int = 8765, *, lan: bool = False) -> None:
     if port == 0:
         raise WanderlensError("連接埠必須介於 1 與 65535。")
-    server = create_server(settings, host, port)
-    visible_host = "127.0.0.1" if host in {"0.0.0.0", "::"} else host
-    print(f"監控頁：http://{visible_host}:{server.server_address[1]}/")
+    if lan:
+        host = "0.0.0.0"
+    token = None if _is_loopback(host) else load_or_create_token(repo_root() / "data" / "monitor.token")
+    server = create_server(settings, host, port, access_token=token)
+    visible_port = server.server_address[1]
+    print(f"電腦：http://127.0.0.1:{visible_port}/")
     print("此頁只讀取本機索引，不提供原始照片，也不顯示座標。按 Ctrl+C 結束。")
-    if host in {"0.0.0.0", "::"}:
-        print(
-            "警告：監控頁沒有登入。綁在所有網路介面時，區網可看到檔名與描述。",
-            file=sys.stderr,
-        )
+    if token:
+        addresses = lan_addresses()
+        if addresses:
+            for address in addresses:
+                print(f"iPhone：http://{address}:{visible_port}/?k={token}")
+        else:
+            print(f"iPhone：http://<這台電腦的區網位址>:{visible_port}/?k={token}")
+        print("手機與電腦請連同一個 Wi-Fi。用 iPhone 的 Safari 打開上面的網址，再選加入主畫面。")
+        print("網址裡的通行憑證不要轉傳。若要作廢，刪除 data/monitor.token 後重新開啟。")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -61,7 +75,13 @@ def serve_monitor(settings: Settings, host: str = "127.0.0.1", port: int = 8765)
         server.server_close()
 
 
-def create_server(settings: Settings, host: str = "127.0.0.1", port: int = 8765) -> MonitorServer:
+def create_server(
+    settings: Settings,
+    host: str = "127.0.0.1",
+    port: int = 8765,
+    *,
+    access_token: str | None = None,
+) -> MonitorServer:
     if not isinstance(port, int) or port < 0 or port > 65535:
         raise WanderlensError("連接埠必須介於 1 與 65535。")
     web_root = (repo_root() / "web").resolve()
@@ -69,9 +89,11 @@ def create_server(settings: Settings, host: str = "127.0.0.1", port: int = 8765)
         raise WanderlensError(f"找不到監控頁：{web_root / 'index.html'}")
     handler = build_handler(settings, web_root)
     try:
-        return MonitorServer((host, port), handler)
+        server = MonitorServer((host, port), handler)
     except OSError as exc:
         raise WanderlensError(f"無法在 {host}:{port} 開啟監控頁：{exc}") from exc
+    server.access_token = access_token
+    return server
 
 
 def build_handler(settings: Settings, web_root: Path):
@@ -100,6 +122,8 @@ def build_handler(settings: Settings, web_root: Path):
 
         def _route(self) -> None:
             parsed = urlparse(self.path)
+            if not self._allow(parsed):
+                return
             path = unquote(parsed.path)
             if path != "/" and path.endswith("/"):
                 path = path[:-1] or "/"
@@ -107,6 +131,22 @@ def build_handler(settings: Settings, web_root: Path):
                 self._api(path, parsed.query)
                 return
             self._static(path)
+
+        def _allow(self, parsed) -> bool:
+            expected = getattr(self.server, "access_token", None)
+            if not expected:
+                return True
+            peer = self.client_address[0] if self.client_address else ""
+            params = parse_qs(parsed.query)
+            query_token = (params.get("k") or [""])[-1]
+            cookie_token = cookie_value(self.headers.get("Cookie"), _TOKEN_NAME)
+            header_token = self.headers.get("X-Wanderlens-Key") or ""
+            if access_granted(peer, cookie_token, query_token, header_token, expected):
+                if _same_token(query_token, expected) or _same_token(header_token, expected):
+                    self._set_cookie = expected
+                return True
+            self._send_denied()
+            return False
 
         def _api(self, path: str, query: str) -> None:
             parts = [part for part in path.split("/") if part]
@@ -164,11 +204,85 @@ def build_handler(settings: Settings, web_root: Path):
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", cache)
             self.send_header("X-Content-Type-Options", "nosniff")
+            cookie = getattr(self, "_set_cookie", None)
+            if cookie:
+                self.send_header("Set-Cookie", _cookie_header(cookie))
             self.end_headers()
             if not getattr(self, "_head_only", False):
                 self.wfile.write(body)
 
+        def _send_denied(self) -> None:
+            body = (
+                "<!DOCTYPE html><html lang=\"zh-Hant\"><meta charset=\"utf-8\">"
+                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
+                "<title>Wanderlens</title><p>請使用電腦終端機印出的 iPhone 網址打開。"
+                "監控頁不會對區網匿名開放。</p>"
+            ).encode("utf-8")
+            self._send_bytes(401, body, "text/html; charset=utf-8", "no-store")
+
     return Handler
+
+
+def access_granted(peer: str, cookie_token: str, query_token: str, header_token: str, expected: str | None) -> bool:
+    if not expected:
+        return True
+    if _is_loopback(peer):
+        return True
+    return any(_same_token(presented, expected) for presented in (cookie_token, query_token, header_token))
+
+
+def load_or_create_token(path: Path) -> str:
+    if path.is_file():
+        current = path.read_text(encoding="utf-8").strip()
+        if _TOKEN_PATTERN.fullmatch(current):
+            return current
+    token = secrets.token_urlsafe(18)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(token + "\n", encoding="utf-8")
+    try:
+        path.chmod(0o600)
+    except OSError:
+        pass
+    return token
+
+
+def lan_addresses() -> list[str]:
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.connect(("192.0.2.1", 9))
+            address = sock.getsockname()[0]
+    except OSError:
+        return []
+    if not address or _is_loopback(address):
+        return []
+    return [address]
+
+
+def cookie_value(header: str | None, name: str) -> str:
+    if not header:
+        return ""
+    for part in header.split(";"):
+        if "=" not in part:
+            continue
+        key, value = part.split("=", 1)
+        if key.strip() == name:
+            return value.strip()
+    return ""
+
+
+def _cookie_header(token: str) -> str:
+    return f"{_TOKEN_NAME}={token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=15552000"
+
+
+def _same_token(presented: str, expected: str) -> bool:
+    if not presented or not expected:
+        return False
+    return hmac.compare_digest(presented, expected)
+
+
+def _is_loopback(host: str) -> bool:
+    name = (host or "").split("%", 1)[0].strip("[]")
+    return name in {"127.0.0.1", "::1", "localhost"} or name.startswith("127.")
 
 
 def monitor_status(settings: Settings) -> dict:

@@ -1,8 +1,29 @@
 let previewSnapshot = null;
 
+export function capturePhoneKey() {
+  try {
+    const key = new URLSearchParams(location.search).get("k");
+    if (key) localStorage.setItem("wanderlens-ui", key);
+    return Boolean(key);
+  } catch {
+    return false;
+  }
+}
+
+function authHeaders(extra = {}) {
+  const headers = { ...extra };
+  try {
+    const key = localStorage.getItem("wanderlens-ui");
+    if (key) headers["X-Wanderlens-Key"] = key;
+  } catch {
+    return headers;
+  }
+  return headers;
+}
+
 export async function getJSON(path) {
   const response = await fetch(path, {
-    headers: { Accept: "application/json" },
+    headers: authHeaders({ Accept: "application/json" }),
     cache: "no-store",
   });
   let payload = null;
@@ -22,7 +43,10 @@ export async function asset(id) {
   if (previewSnapshot) {
     return previewSnapshot.assets.find((item) => item.id === id) || null;
   }
-  const response = await fetch(`/api/assets/${encodeURIComponent(id)}`, { cache: "no-store" });
+  const response = await fetch(`/api/assets/${encodeURIComponent(id)}`, {
+    headers: authHeaders(),
+    cache: "no-store",
+  });
   if (response.status === 404) return null;
   const payload = await response.json();
   if (!response.ok) {

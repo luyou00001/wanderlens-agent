@@ -110,6 +110,7 @@ def build_parser() -> argparse.ArgumentParser:
     ui = commands.add_parser("ui", parents=[common], help="開啟本機監控頁。")
     ui.add_argument("--host", default="127.0.0.1", help="預設只聽 127.0.0.1。")
     ui.add_argument("--port", type=int, default=8765)
+    ui.add_argument("--lan", action="store_true", help="讓同一 Wi-Fi 的 iPhone 用網頁打開，並印出通行憑證。")
     ui.set_defaults(handler=handle_ui)
     return parser
 
@@ -237,7 +238,7 @@ def handle_ui(args: argparse.Namespace) -> int:
     host = (args.host or "").strip()
     if not host:
         raise WanderlensError("請提供 --host。")
-    serve_monitor(_settings(args), host=host, port=args.port)
+    serve_monitor(_settings(args), host=host, port=args.port, lan=args.lan)
     return 0
 
 

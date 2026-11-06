@@ -98,3 +98,51 @@
     flex-direction: column;
   }
 }
+
+@media (max-width: 800px) {
+  .app {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+
+  .rail {
+    position: sticky;
+    order: 2;
+    flex: 0 0 auto;
+    width: 100%;
+    z-index: 5;
+    flex-direction: row;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-2) calc(var(--space-2) + env(safe-area-inset-bottom));
+    border-right: 0;
+    border-bottom: 0;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .rail > div:first-child,
+  .rail-note {
+    display: none;
+  }
+
+  .workspace {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: auto;
+    padding-bottom: 0;
+  }
+
+  .topbar {
+    padding-top: calc(var(--space-4) + env(safe-area-inset-top));
+  }
+
+  .stage {
+    padding: var(--space-4);
+  }
+
+  .nav {
+    flex: 1;
+    width: 100%;
+  }
+}

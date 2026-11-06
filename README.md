@@ -77,7 +77,21 @@ wanderlens ui
 
 瀏覽器打開終端機印出的網址，預設是 <http://127.0.0.1:8765/>。頁面大約每 3 秒重讀一次索引，用來查看清點、描述、草稿與模型清單。它不提供原始照片，也不顯示座標。
 
-樣式集中在 `web/css/tokens.css`。之後若要調整版面，先看 [web/DESIGN.md](web/DESIGN.md)。監控頁沒有登入，請保持預設的 `127.0.0.1`，不要綁到所有網路介面。
+樣式集中在 `web/css/tokens.css`。之後若要調整版面，先看 [web/DESIGN.md](web/DESIGN.md)。只在這台電腦上看時，維持預設的 `127.0.0.1`。
+
+### 在 iPhone 上打開
+
+電腦與 iPhone 連同一個 Wi-Fi 後：
+
+```bash
+wanderlens ui --lan
+```
+
+終端機會印出電腦網址，以及給 iPhone 的網址。用 Safari 打開 iPhone 那一行，點分享，再選加入主畫面。之後主畫面圖示會以網頁方式打開，不會經過 App Store。
+
+iPhone 網址裡的 `k` 是通行憑證。不要轉傳，也不要提交 `data/monitor.token`。電腦本機的 `http://127.0.0.1:8765/` 不需要這組憑證。
+
+現階段不把這個頁面改寫成 Expo。Expo Go 是給 React Native 開發時預覽的，套用在這裡就要重寫介面。若以後要做成可安裝的 iOS App，再考慮 Capacitor，它可以包住現在這個網頁。
 
 ### 給其他開發成員看的網址
 

@@ -294,6 +294,12 @@ tbody tr:hover td {
   font-size: var(--text-sm);
 }
 
+.install-hint {
+  margin: var(--space-2) 0 0;
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+}
+
 @media (max-width: 960px) {
   .nav {
     flex-direction: row;
@@ -306,5 +312,24 @@ tbody tr:hover td {
 
   .rail-note {
     margin-top: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .nav-button,
+  .button,
+  .choice,
+  .field,
+  .select {
+    min-height: 44px;
+  }
+
+  .nav-button {
+    flex: 1 1 0;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
   }
 }

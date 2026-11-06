@@ -2,8 +2,15 @@
 <html lang="zh-Hant">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#12100e" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Wanderlens" />
     <title>Wanderlens 監控</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%2312100e'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23e0a15a' stroke-width='2'/%3E%3C/svg%3E" />
     <link rel="stylesheet" href="css/tokens.css" />
     <link rel="stylesheet" href="css/base.css" />
@@ -31,6 +38,7 @@
             <h1 class="view-title" id="view-title">總覽</h1>
             <p class="status-line" id="status-line">正在讀取索引。</p>
             <p class="library-path" id="library-path"></p>
+            <p class="install-hint" id="install-hint" hidden>在 iPhone 的 Safari 點分享，再選加入主畫面。</p>
           </div>
           <div class="topbar-actions">
             <span class="live-dot" id="live-dot" aria-hidden="true"></span>

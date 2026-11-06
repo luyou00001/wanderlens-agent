@@ -105,7 +105,15 @@ docker compose run --rm pipeline describe --limit 10
 wanderlens ui --host 127.0.0.1 --port 8765
 ```
 
-用瀏覽器打開終端機印出的網址。頁面會重讀本機索引，不提供原始照片，也不顯示座標。它沒有登入。不要加 `--host 0.0.0.0`，否則同一區網看得到檔名與描述。
+用瀏覽器打開終端機印出的網址。頁面會重讀本機索引，不提供原始照片，也不顯示座標。
+
+只在這台電腦上看時，不要加 `--host 0.0.0.0`。若要在 iPhone 的 Safari 打開，改用：
+
+```bash
+wanderlens ui --lan
+```
+
+手機與電腦要在同一個 Wi-Fi。終端機印出的 iPhone 網址帶有通行憑證，區網其他裝置沒有這組憑證就打不開。憑證寫在 `data/monitor.token`，不要提交。用 Safari 加入主畫面即可，不必先做 Expo 或上架。
 
 容器裡也可以執行 `wanderlens ui`。映像會帶入 `web/`；用 compose 時，這個目錄另外掛載，方便直接改樣式。
 
