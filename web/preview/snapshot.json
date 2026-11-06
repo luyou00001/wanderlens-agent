@@ -1,0 +1,1778 @@
+{
+  "preview": true,
+  "notice": "這是預覽版面，不是你的素材庫。照片索引只留在執行 wanderlens ui 的那台機器。",
+  "status": {
+    "service": "wanderlens-preview",
+    "version": "0.2.1",
+    "library_ready": false,
+    "library_error": null,
+    "library_path": "預覽資料，不是本機索引",
+    "provider": "preview",
+    "openai_model": "",
+    "time": null
+  },
+  "summary": {
+    "assets": 2,
+    "images": 1,
+    "videos": 1,
+    "decode_errors": 0,
+    "described": 1,
+    "needs_vision": 1,
+    "drafted": 1,
+    "approved": 0,
+    "cleared": 1,
+    "with_gps": 1,
+    "trips": 1,
+    "library_ready": false,
+    "library_error": null
+  },
+  "assets": [
+    {
+      "id": "preview-photo",
+      "relative_path": "preview/shore.jpg",
+      "alternate_paths": [],
+      "media_type": "image",
+      "byte_size": 1800000,
+      "width": 3000,
+      "height": 2000,
+      "captured_at": "2024-04-02T09:30:00+00:00",
+      "has_gps": true,
+      "camera_model": "預覽機身",
+      "duration_s": null,
+      "trip_id": "preview-trip",
+      "user_place": "預覽地點",
+      "decode_error": null,
+      "technical_fitness": 80,
+      "provider": "openai",
+      "model": "預覽模型",
+      "described": true,
+      "needs_vision": false,
+      "people": false,
+      "sensitive": false,
+      "draft_count": 1,
+      "approved_for_publish": false,
+      "cleared_for_sale": true,
+      "ingested_at": "2024-04-03T00:00:00+00:00",
+      "summary_zh_hant": "這是預覽用的畫面說明，不是你的照片。",
+      "summary_en": "Preview caption. This is not your photograph.",
+      "subjects": [
+        "岸"
+      ],
+      "setting": "預覽場景",
+      "mood": "平靜",
+      "aesthetic_score": 0.7,
+      "suggested_products": [
+        "wallpaper"
+      ],
+      "drafts": [
+        {
+          "platform": "instagram",
+          "language": "zh-Hant",
+          "title": "預覽草稿",
+          "needs_vision_model": false,
+          "copy_text": "預覽草稿，不是你的貼文。"
+        }
+      ]
+    },
+    {
+      "id": "preview-video",
+      "relative_path": "preview/walk.mp4",
+      "alternate_paths": [],
+      "media_type": "video",
+      "byte_size": 12000000,
+      "width": 1920,
+      "height": 1080,
+      "captured_at": "2024-04-02T11:05:00+00:00",
+      "has_gps": false,
+      "camera_model": null,
+      "duration_s": 8.0,
+      "trip_id": "preview-trip",
+      "user_place": null,
+      "decode_error": null,
+      "technical_fitness": null,
+      "provider": "heuristic",
+      "model": "technical-precheck",
+      "described": false,
+      "needs_vision": true,
+      "people": null,
+      "sensitive": null,
+      "draft_count": 0,
+      "approved_for_publish": false,
+      "cleared_for_sale": false,
+      "ingested_at": "2024-04-03T00:00:00+00:00",
+      "summary_zh_hant": "技術預檢：這是預覽影片，尚未描述畫面。",
+      "summary_en": "Technical precheck: preview video, scene not described.",
+      "subjects": [],
+      "setting": null,
+      "mood": null,
+      "aesthetic_score": null,
+      "suggested_products": [],
+      "drafts": []
+    }
+  ],
+  "models": [
+    {
+      "id": "qwen3.5-9b",
+      "name": "Qwen3.5-9B",
+      "kind": "model",
+      "parameters": "9B",
+      "roles": [
+        "vision_language",
+        "video_understanding",
+        "text_generation"
+      ],
+      "huggingface": "Qwen/Qwen3.5-9B",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "recommended",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 12,
+      "runtime": [
+        "sglang",
+        "vllm",
+        "transformers"
+      ],
+      "notes": "單機預設選項。同一權重可讀照片與影片，也能寫繁體中文。 16GB 顯示卡請用 4-bit 或 8-bit，並把上下文降到約 8192；24GB 較從容。 描述行程照片時請關閉 thinking，避免思考過程吃掉輸出長度。\n"
+    },
+    {
+      "id": "gemma-4-e2b-it",
+      "name": "Gemma 4 E2B Instruct",
+      "kind": "model",
+      "parameters": "E2B",
+      "roles": [
+        "vision_language"
+      ],
+      "huggingface": "google/gemma-4-E2B-it",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 6,
+      "runtime": [
+        "transformers",
+        "ollama"
+      ],
+      "notes": "更小的 Gemma 4 指令權重，用來確認流程，不建議作為最終文案模型。"
+    },
+    {
+      "id": "gemma-4-e4b-it",
+      "name": "Gemma 4 E4B Instruct",
+      "kind": "model",
+      "parameters": "E4B",
+      "roles": [
+        "vision_language",
+        "video_understanding"
+      ],
+      "huggingface": "google/gemma-4-E4B-it",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 8,
+      "runtime": [
+        "transformers",
+        "vllm",
+        "ollama"
+      ],
+      "notes": "Gemma 4 的 E 系列可接受影像；E4B 亦能接受音訊。適合作為邊界設備上的備援。"
+    },
+    {
+      "id": "internvl3.5-30b-a3b",
+      "name": "InternVL3.5-30B-A3B",
+      "kind": "model",
+      "parameters": "30B-A3B",
+      "roles": [
+        "vision_language"
+      ],
+      "huggingface": "OpenGVLab/InternVL3_5-30B-A3B",
+      "github": "https://github.com/OpenGVLab/InternVL",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 24,
+      "runtime": [
+        "transformers",
+        "vllm"
+      ],
+      "notes": "MoE，總參數量較大、啟動參數量較小。24GB 以上再考慮，並優先使用量化權重。"
+    },
+    {
+      "id": "internvl3.5-4b",
+      "name": "InternVL3.5-4B",
+      "kind": "model",
+      "parameters": "4.7B",
+      "roles": [
+        "vision_language"
+      ],
+      "huggingface": "OpenGVLab/InternVL3_5-4B",
+      "github": "https://github.com/OpenGVLab/InternVL",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 8,
+      "runtime": [
+        "transformers",
+        "vllm"
+      ],
+      "notes": "較小的 InternVL3.5，可做第一輪篩片。HF 格式為 OpenGVLab/InternVL3_5-4B-HF。"
+    },
+    {
+      "id": "internvl3.5-8b",
+      "name": "InternVL3.5-8B",
+      "kind": "model",
+      "parameters": "8.5B",
+      "roles": [
+        "vision_language"
+      ],
+      "huggingface": "OpenGVLab/InternVL3_5-8B",
+      "github": "https://github.com/OpenGVLab/InternVL",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 12,
+      "runtime": [
+        "transformers",
+        "vllm"
+      ],
+      "notes": "細節與文件理解強。Transformers 標準格式另見 OpenGVLab/InternVL3_5-8B-HF， 指令微調中間權重另見 OpenGVLab/InternVL3_5-8B-Instruct。 只要服務提供 OpenAI chat completions，這個專案就不必綁定其中一種格式。\n"
+    },
+    {
+      "id": "minicpm-v-4.6",
+      "name": "MiniCPM-V 4.6",
+      "kind": "model",
+      "parameters": "1.3B",
+      "roles": [
+        "vision_language",
+        "video_understanding"
+      ],
+      "huggingface": "openbmb/MiniCPM-V-4.6",
+      "github": "https://github.com/OpenBMB/MiniCPM-V",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 4,
+      "runtime": [
+        "transformers"
+      ],
+      "notes": "邊緣裝置與大量粗篩用。精細文案仍建議改走 Qwen3.5 或 InternVL。"
+    },
+    {
+      "id": "molmo2-8b",
+      "name": "Molmo2-8B",
+      "kind": "model",
+      "parameters": "8B",
+      "roles": [
+        "vision_language",
+        "video_understanding"
+      ],
+      "huggingface": "allenai/Molmo2-8B",
+      "github": "https://github.com/allenai/molmo",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 12,
+      "runtime": [
+        "transformers"
+      ],
+      "notes": "訓練資料公開程度高，擅長計數、短片與畫面定位。 之後若要裁切主體可以用它的指向結果；不要用來辨識身分。\n"
+    },
+    {
+      "id": "qwen2.5-vl-7b-instruct",
+      "name": "Qwen2.5-VL-7B-Instruct",
+      "kind": "model",
+      "parameters": "7B",
+      "roles": [
+        "vision_language",
+        "video_understanding"
+      ],
+      "huggingface": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "github": "https://github.com/QwenLM/Qwen2.5-VL",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 12,
+      "runtime": [
+        "vllm",
+        "sglang",
+        "transformers"
+      ],
+      "notes": "穩定的前代權重。其他尺寸的授權不一定相同，換尺寸時要重看模型卡。"
+    },
+    {
+      "id": "qwen3-vl-4b-instruct",
+      "name": "Qwen3-VL-4B-Instruct",
+      "kind": "model",
+      "parameters": "4B",
+      "roles": [
+        "vision_language",
+        "video_understanding"
+      ],
+      "huggingface": "Qwen/Qwen3-VL-4B-Instruct",
+      "github": "https://github.com/QwenLM/Qwen3-VL",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 8,
+      "runtime": [
+        "vllm",
+        "sglang",
+        "transformers"
+      ],
+      "notes": "Qwen3-VL 的較小 Instruct 權重，適合先跑通大量照片。"
+    },
+    {
+      "id": "qwen3-vl-8b-instruct",
+      "name": "Qwen3-VL-8B-Instruct",
+      "kind": "model",
+      "parameters": "8B",
+      "roles": [
+        "vision_language",
+        "video_understanding"
+      ],
+      "huggingface": "Qwen/Qwen3-VL-8B-Instruct",
+      "github": "https://github.com/QwenLM/Qwen3-VL",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 12,
+      "runtime": [
+        "vllm",
+        "sglang",
+        "transformers"
+      ],
+      "notes": "上一代專用視覺語言模型，文件與社群範例較多。 只用來描述畫面；不要用來辨識或建檔特定人物。\n"
+    },
+    {
+      "id": "qwen3.5-4b",
+      "name": "Qwen3.5-4B",
+      "kind": "model",
+      "parameters": "4B",
+      "roles": [
+        "vision_language",
+        "video_understanding",
+        "text_generation"
+      ],
+      "huggingface": "Qwen/Qwen3.5-4B",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "alternate",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 8,
+      "runtime": [
+        "sglang",
+        "vllm",
+        "transformers"
+      ],
+      "notes": "顯存較少時的同系列選擇，介面與 9B 相同。"
+    },
+    {
+      "id": "birefnet",
+      "name": "BiRefNet",
+      "kind": "model",
+      "parameters": "segmentation",
+      "roles": [
+        "matting"
+      ],
+      "huggingface": "ZhengPeng7/BiRefNet",
+      "github": "https://github.com/ZhengPeng7/BiRefNet",
+      "license": "MIT",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "runtime": [
+        "transformers"
+      ],
+      "notes": "高解析去背。風景與旅行紀實通常用不到；只有主體需要獨立成商品圖時再考慮。"
+    },
+    {
+      "id": "dinov2-base",
+      "name": "DINOv2 base",
+      "kind": "model",
+      "parameters": "86M",
+      "roles": [
+        "image_embedding"
+      ],
+      "huggingface": "facebook/dinov2-base",
+      "github": "https://github.com/facebookresearch/dinov2",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 2,
+      "runtime": [
+        "transformers"
+      ],
+      "notes": "DINOv2 的較小權重，可與 large 先做小樣本比較再決定。"
+    },
+    {
+      "id": "dinov2-large",
+      "name": "DINOv2 large",
+      "kind": "model",
+      "parameters": "300M",
+      "roles": [
+        "image_embedding"
+      ],
+      "huggingface": "facebook/dinov2-large",
+      "github": "https://github.com/facebookresearch/dinov2",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "runtime": [
+        "transformers"
+      ],
+      "notes": "純視覺特徵，沒有文字。適合找構圖、色彩與主體形狀相近的照片，不適合文字查詢。"
+    },
+    {
+      "id": "faster-whisper",
+      "name": "faster-whisper",
+      "kind": "runtime",
+      "roles": [
+        "speech_transcription"
+      ],
+      "github": "https://github.com/SYSTRAN/faster-whisper",
+      "license": "MIT",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "none",
+      "notes": "CTranslate2 推論引擎，不是另一套語音模型。權重仍用 Whisper，並遵循該權重的授權。"
+    },
+    {
+      "id": "florence-2-large",
+      "name": "Florence-2-large",
+      "kind": "model",
+      "parameters": "0.77B",
+      "roles": [
+        "vision_language",
+        "ocr"
+      ],
+      "huggingface": "microsoft/Florence-2-large",
+      "github": "https://github.com/microsoft/Florence",
+      "license": "MIT",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "runtime": [
+        "transformers"
+      ],
+      "notes": "Florence-2 的預訓練權重。一般標註請優先用 florence-2-large-ft。"
+    },
+    {
+      "id": "florence-2-large-ft",
+      "name": "Florence-2-large-ft",
+      "kind": "model",
+      "parameters": "0.77B",
+      "roles": [
+        "vision_language",
+        "ocr"
+      ],
+      "huggingface": "microsoft/Florence-2-large-ft",
+      "github": "https://github.com/microsoft/Florence",
+      "license": "MIT",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "runtime": [
+        "transformers"
+      ],
+      "notes": "輕量多任務模型，可做簡短字幕、物件與 OCR。不是聊天模型， 因此尚未接到目前的 OpenAI 相容描述器。適合日後作為每張照片的便宜前處理。\n"
+    },
+    {
+      "id": "internvideo3-8b",
+      "name": "InternVideo3-8B-Instruct",
+      "kind": "model",
+      "parameters": "8B",
+      "roles": [
+        "video_understanding"
+      ],
+      "huggingface": "yanziang/InternVideo3-8B-Instruct",
+      "github": "https://github.com/OpenGVLab/InternVideo",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "runtime": [
+        "transformers"
+      ],
+      "notes": "面向長影片與多步理解。模型卡範例亦寫到 OpenGVLab/InternVideo3-8B-Instruct。 本版仍以 ffmpeg 抽幀後送交視覺語言模型；這個權重留待長片流程再接。\n"
+    },
+    {
+      "id": "jina-clip-v1",
+      "name": "Jina CLIP v1",
+      "kind": "model",
+      "parameters": "ViT",
+      "roles": [
+        "image_embedding"
+      ],
+      "huggingface": "jinaai/jina-clip-v1",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "notes": "第一代權重為 Apache-2.0，與不可商用的 v2 不同。尚未接入圖庫檢索。"
+    },
+    {
+      "id": "laion-aesthetic-predictor",
+      "name": "LAION Aesthetic Predictor V1",
+      "kind": "model",
+      "parameters": "linear",
+      "roles": [
+        "aesthetic_quality"
+      ],
+      "github": "https://github.com/LAION-AI/aesthetic-predictor",
+      "weights": "https://github.com/LAION-AI/aesthetic-predictor/raw/main/sa_0_4_vit_l_14_linear.pth",
+      "license": "MIT",
+      "commercial_use": "conditional",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "notes": "這是接在 CLIP ViT-L/14 特徵上的線性層，本身為 MIT。 實際使用還須遵守所搭配 CLIP 權重的授權，因此標成 conditional。\n"
+    },
+    {
+      "id": "mediapipe-face-detection",
+      "name": "MediaPipe Face Detection",
+      "kind": "tool",
+      "roles": [
+        "privacy_redaction"
+      ],
+      "github": "https://github.com/google-ai-edge/mediapipe",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "none",
+      "notes": "只計劃用來偵測人臉並做遮罩。禁止用於身分識別、人臉搜尋或建立人物資料庫。 有可辨識人物的照片，預設不能進入販售包。\n"
+    },
+    {
+      "id": "openclip-vit-g-14",
+      "name": "OpenCLIP ViT-g-14 LAION-2B",
+      "kind": "model",
+      "parameters": "ViT-g-14",
+      "roles": [
+        "image_embedding"
+      ],
+      "huggingface": "laion/CLIP-ViT-g-14-laion2B-s12B-b42K",
+      "github": "https://github.com/mlfoundations/open_clip",
+      "license": "MIT",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 6,
+      "runtime": [
+        "open_clip"
+      ],
+      "notes": "成熟的圖文特徵基線。新的索引建議先比較 SigLIP 2，再決定是否保留這組權重。"
+    },
+    {
+      "id": "paddleocr",
+      "name": "PaddleOCR",
+      "kind": "tool",
+      "roles": [
+        "ocr"
+      ],
+      "github": "https://github.com/PaddlePaddle/PaddleOCR",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "notes": "讀取路標、菜單與車票上的文字，補充視覺模型的 OCR。它不負責判斷一張照片好不好看。"
+    },
+    {
+      "id": "pyiqa",
+      "name": "IQA-PyTorch",
+      "kind": "tool",
+      "roles": [
+        "aesthetic_quality"
+      ],
+      "github": "https://github.com/chaofengc/IQA-PyTorch",
+      "license": "見倉庫與各權重",
+      "commercial_use": "unknown",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "notes": "一個工具箱收錄 MUSIQ、TOPIQ、CLIP-IQA、NIMA，以及 2026 年加入的 Q-ReAlign （約 0.8B、4B、9B）。各指標權重的授權並不相同，不能整包視為可商用。\n"
+    },
+    {
+      "id": "pyscenedetect",
+      "name": "PySceneDetect",
+      "kind": "tool",
+      "roles": [
+        "shot_detection"
+      ],
+      "github": "https://github.com/Breakthrough/PySceneDetect",
+      "license": "BSD-3-Clause",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "none",
+      "notes": "不需要顯示卡的鏡頭切分工具，適合作為 TransNetV2 之前的基線。授權檔請以倉庫為準。"
+    },
+    {
+      "id": "q-align",
+      "name": "Q-Align / OneAlign",
+      "kind": "model",
+      "parameters": "7B 級",
+      "roles": [
+        "aesthetic_quality"
+      ],
+      "huggingface": "q-future/one-align",
+      "github": "https://github.com/Q-Future/Q-Align",
+      "license": "見倉庫",
+      "commercial_use": "unknown",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "可同時評影像品質與美學，也有影片分數。倉庫授權不是清楚的 Apache/MIT，商用前必須讀模型卡。"
+    },
+    {
+      "id": "qwen3-4b",
+      "name": "Qwen3-4B",
+      "kind": "model",
+      "parameters": "4B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "Qwen/Qwen3-4B",
+      "github": "https://github.com/QwenLM/Qwen3",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 6,
+      "runtime": [
+        "vllm",
+        "sglang",
+        "transformers"
+      ],
+      "notes": "較小的純文字 Qwen3，用途與 8B 相同，顯存占用較低。"
+    },
+    {
+      "id": "qwen3-8b",
+      "name": "Qwen3-8B",
+      "kind": "model",
+      "parameters": "8B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "Qwen/Qwen3-8B",
+      "github": "https://github.com/QwenLM/Qwen3",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 8,
+      "runtime": [
+        "vllm",
+        "sglang",
+        "transformers"
+      ],
+      "notes": "純文字模型，不能當作 describe 的視覺模型。日後可用來潤飾已經看過圖的草稿。"
+    },
+    {
+      "id": "realesrgan-x4plus",
+      "name": "Real-ESRGAN x4plus",
+      "kind": "model",
+      "parameters": "RRDB",
+      "roles": [
+        "image_restoration"
+      ],
+      "github": "https://github.com/xinntao/Real-ESRGAN",
+      "weights": "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth",
+      "license": "BSD-3-Clause",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "notes": "只對已入選的少數照片做放大，不要把整個圖庫都放大。 若產品使用超解析度，銷售頁必須如實說明，不要寫成原機原生解析度。 權重連結失效時，改從該 GitHub Releases 取得 RealESRGAN_x4plus.pth。\n"
+    },
+    {
+      "id": "siglip2-base",
+      "name": "SigLIP 2 Base",
+      "kind": "model",
+      "parameters": "86M",
+      "roles": [
+        "image_embedding"
+      ],
+      "huggingface": "google/siglip2-base-patch16-256",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 2,
+      "runtime": [
+        "transformers"
+      ],
+      "notes": "較小的 SigLIP 2，適合先把整個圖庫編成索引，再決定是否改用 So400m。"
+    },
+    {
+      "id": "siglip2-so400m",
+      "name": "SigLIP 2 So400m",
+      "kind": "model",
+      "parameters": "400M",
+      "roles": [
+        "image_embedding"
+      ],
+      "huggingface": "google/siglip2-so400m-patch14-384",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "runtime": [
+        "transformers"
+      ],
+      "notes": "圖文同一個向量空間，之後做「以文字找照片」時優先用它，而不是一般文字搜尋。"
+    },
+    {
+      "id": "transnetv2",
+      "name": "TransNetV2",
+      "kind": "model",
+      "parameters": "small",
+      "roles": [
+        "shot_detection"
+      ],
+      "github": "https://github.com/soCzech/TransNetV2",
+      "license": "MIT",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 2,
+      "notes": "偵測鏡頭切換。多年影片應先切成鏡頭，再決定哪些畫面值得送進視覺模型。"
+    },
+    {
+      "id": "whisper-large-v3",
+      "name": "Whisper large-v3",
+      "kind": "model",
+      "parameters": "1.5B",
+      "roles": [
+        "speech_transcription"
+      ],
+      "huggingface": "openai/whisper-large-v3",
+      "github": "https://github.com/openai/whisper",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 10,
+      "runtime": [
+        "transformers",
+        "faster-whisper"
+      ],
+      "notes": "把影片裡真正有人說話的片段轉成文字，再交給文案步驟。風聲與環境聲不必強行轉錄。"
+    },
+    {
+      "id": "whisper-large-v3-turbo",
+      "name": "Whisper large-v3-turbo",
+      "kind": "model",
+      "parameters": "0.8B",
+      "roles": [
+        "speech_transcription"
+      ],
+      "huggingface": "openai/whisper-large-v3-turbo",
+      "github": "https://github.com/openai/whisper",
+      "license": "Apache-2.0",
+      "commercial_use": "allowed",
+      "status": "catalog-only",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 6,
+      "runtime": [
+        "transformers",
+        "faster-whisper"
+      ],
+      "notes": "large-v3 的較快版本，大量旅行影片建議先用它。"
+    },
+    {
+      "id": "audiogen-medium",
+      "name": "AudioGen medium",
+      "kind": "model",
+      "parameters": "1.5B",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "facebook/audiogen-medium",
+      "github": "https://github.com/facebookresearch/audiocraft",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "與 MusicGen 相同，程式碼為 MIT、權重為非商業。只可實驗環境音，不可放進商品。"
+    },
+    {
+      "id": "audioldm-l-full",
+      "name": "AudioLDM Large",
+      "kind": "model",
+      "parameters": "Large",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "cvssp/audioldm-l-full",
+      "github": "https://github.com/haoheliu/AudioLDM",
+      "license": "CC-BY-NC-SA-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "AudioLDM 第一代大型權重，非商業授權。"
+    },
+    {
+      "id": "audioldm-m-full",
+      "name": "AudioLDM Medium",
+      "kind": "model",
+      "parameters": "Medium",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "cvssp/audioldm-m-full",
+      "github": "https://github.com/haoheliu/AudioLDM",
+      "license": "CC-BY-NC-SA-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 6,
+      "notes": "AudioLDM 第一代中型權重，與大型版同為非商業授權。"
+    },
+    {
+      "id": "audioldm2",
+      "name": "AudioLDM 2",
+      "kind": "model",
+      "parameters": "base",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "cvssp/audioldm2",
+      "github": "https://github.com/haoheliu/AudioLDM2",
+      "license": "CC-BY-NC-SA-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "AudioLDM 2 基礎權重，非商業授權，衍生權重通常須以相同方式分享。"
+    },
+    {
+      "id": "audioldm2-large",
+      "name": "AudioLDM 2 Large",
+      "kind": "model",
+      "parameters": "1.5B",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "cvssp/audioldm2-large",
+      "github": "https://github.com/haoheliu/AudioLDM2",
+      "license": "CC-BY-NC-SA-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 12,
+      "notes": "文字或音訊生成環境聲。權重不可商用，也不要配進販售影片。"
+    },
+    {
+      "id": "audioldm2-music",
+      "name": "AudioLDM 2 Music",
+      "kind": "model",
+      "parameters": "music",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "cvssp/audioldm2-music",
+      "github": "https://github.com/haoheliu/AudioLDM2",
+      "license": "CC-BY-NC-SA-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "偏音樂的 AudioLDM 2 權重。不要用來製作商業配樂。"
+    },
+    {
+      "id": "aya-expanse-32b",
+      "name": "Aya Expanse 32B",
+      "kind": "model",
+      "parameters": "32B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "CohereForAI/aya-expanse-32b",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 24,
+      "notes": "Aya Expanse 的較大版本，授權同為非商業。"
+    },
+    {
+      "id": "aya-expanse-8b",
+      "name": "Aya Expanse 8B",
+      "kind": "model",
+      "parameters": "8B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "CohereForAI/aya-expanse-8b",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 8,
+      "notes": "多語文字模型，適合實驗翻譯語氣，不可用於商業文案。"
+    },
+    {
+      "id": "cogvlm2-llama3-chat-19b",
+      "name": "CogVLM2 Llama3 Chat 19B",
+      "kind": "model",
+      "parameters": "19B",
+      "roles": [
+        "vision_language"
+      ],
+      "huggingface": "THUDM/cogvlm2-llama3-chat-19B",
+      "github": "https://github.com/zai-org/CogVLM2",
+      "license": "CogVLM2",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "視覺對話模型，底層含 Llama 3，並另有清華的使用條款。 商業使用通常要另行申請。模型卡若已改到 zai-org，請同步更新識別碼。\n"
+    },
+    {
+      "id": "cogvlm2-llama3-chinese-chat-19b",
+      "name": "CogVLM2 Llama3 Chinese Chat 19B",
+      "kind": "model",
+      "parameters": "19B",
+      "roles": [
+        "vision_language"
+      ],
+      "huggingface": "THUDM/cogvlm2-llama3-chinese-chat-19B",
+      "github": "https://github.com/zai-org/CogVLM2",
+      "license": "CogVLM2",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "中英視覺對話版本。授權與英文版相同，不要直接拿來產生商業文案。"
+    },
+    {
+      "id": "cogvlm2-video-llama3-chat",
+      "name": "CogVLM2 Video Llama3 Chat",
+      "kind": "model",
+      "parameters": "19B",
+      "roles": [
+        "video_understanding"
+      ],
+      "huggingface": "THUDM/cogvlm2-video-llama3-chat",
+      "github": "https://github.com/zai-org/CogVLM2",
+      "license": "CogVLM2",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "影片理解版本。只作實驗對照，不接入預設描述流程。"
+    },
+    {
+      "id": "command-r",
+      "name": "Command R",
+      "kind": "model",
+      "parameters": "35B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "CohereForAI/c4ai-command-r-v01",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 24,
+      "notes": "純文字模型，權重不可商用。即使服務能說 OpenAI 介面，也不要拿來寫販售文案。"
+    },
+    {
+      "id": "command-r-08-2024",
+      "name": "Command R 08-2024",
+      "kind": "model",
+      "parameters": "32B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "CohereForAI/c4ai-command-r-08-2024",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 24,
+      "notes": "Command R 的 2024 年 8 月權重，模型卡標為 CC-BY-NC。不可用於商業文案。"
+    },
+    {
+      "id": "command-r-plus",
+      "name": "Command R+",
+      "kind": "model",
+      "parameters": "104B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "CohereForAI/c4ai-command-r-plus",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 64,
+      "notes": "Command R 的較大版本，同樣為非商業授權。"
+    },
+    {
+      "id": "command-r7b",
+      "name": "Command R7B",
+      "kind": "model",
+      "parameters": "7B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "CohereForAI/c4ai-command-r7b-12-2024",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 8,
+      "notes": "較小的 Command R。體積較小並不改變非商業授權。"
+    },
+    {
+      "id": "flux.1-canny-dev",
+      "name": "FLUX.1 Canny dev",
+      "kind": "model",
+      "parameters": "12B",
+      "roles": [
+        "image_editing"
+      ],
+      "huggingface": "black-forest-labs/FLUX.1-Canny-dev",
+      "github": "https://github.com/black-forest-labs/flux",
+      "license": "FLUX-dev-Non-Commercial",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "以邊緣條件重繪。授權與其他 FLUX dev 權重相同。"
+    },
+    {
+      "id": "flux.1-canny-dev-lora",
+      "name": "FLUX.1 Canny dev LoRA",
+      "kind": "model",
+      "parameters": "LoRA",
+      "roles": [
+        "image_editing"
+      ],
+      "huggingface": "black-forest-labs/FLUX.1-Canny-dev-lora",
+      "github": "https://github.com/black-forest-labs/flux",
+      "license": "FLUX-dev-Non-Commercial",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "Canny dev 的輕量適配器，同樣不可用於商業生產。"
+    },
+    {
+      "id": "flux.1-depth-dev",
+      "name": "FLUX.1 Depth dev",
+      "kind": "model",
+      "parameters": "12B",
+      "roles": [
+        "image_editing"
+      ],
+      "huggingface": "black-forest-labs/FLUX.1-Depth-dev",
+      "github": "https://github.com/black-forest-labs/flux",
+      "license": "FLUX-dev-Non-Commercial",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "以深度條件重繪照片。只可作非商業實驗，不要拿來製作上架商品。"
+    },
+    {
+      "id": "flux.1-depth-dev-lora",
+      "name": "FLUX.1 Depth dev LoRA",
+      "kind": "model",
+      "parameters": "LoRA",
+      "roles": [
+        "image_editing"
+      ],
+      "huggingface": "black-forest-labs/FLUX.1-Depth-dev-lora",
+      "github": "https://github.com/black-forest-labs/flux",
+      "license": "FLUX-dev-Non-Commercial",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "Depth dev 的輕量適配器，授權不因體積變小而放寬。"
+    },
+    {
+      "id": "flux.1-dev",
+      "name": "FLUX.1 dev",
+      "kind": "model",
+      "parameters": "12B",
+      "roles": [
+        "image_generation"
+      ],
+      "huggingface": "black-forest-labs/FLUX.1-dev",
+      "github": "https://github.com/black-forest-labs/flux",
+      "license": "FLUX-dev-Non-Commercial",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "權重只可用於非商業、非生產用途。用它產出圖片再販售或對觀眾提供服務，不屬於允許範圍。 輸出是否另有授權，仍以 Black Forest Labs 當時的條款為準。\n"
+    },
+    {
+      "id": "flux.1-fill-dev",
+      "name": "FLUX.1 Fill dev",
+      "kind": "model",
+      "parameters": "12B",
+      "roles": [
+        "image_editing"
+      ],
+      "huggingface": "black-forest-labs/FLUX.1-Fill-dev",
+      "github": "https://github.com/black-forest-labs/flux",
+      "license": "FLUX-dev-Non-Commercial",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "依遮罩補畫。授權與 FLUX.1 dev 相同，不可用於營利流程。"
+    },
+    {
+      "id": "flux.1-kontext-dev",
+      "name": "FLUX.1 Kontext dev",
+      "kind": "model",
+      "parameters": "12B",
+      "roles": [
+        "image_editing"
+      ],
+      "huggingface": "black-forest-labs/FLUX.1-Kontext-dev",
+      "github": "https://github.com/black-forest-labs/flux",
+      "license": "FLUX-dev-Non-Commercial",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "依文字指示修改既有照片。修改後的成品若要販售，不應使用這個 dev 權重。"
+    },
+    {
+      "id": "flux.1-krea-dev",
+      "name": "FLUX.1 Krea dev",
+      "kind": "model",
+      "parameters": "12B",
+      "roles": [
+        "image_generation"
+      ],
+      "huggingface": "black-forest-labs/FLUX.1-Krea-dev",
+      "github": "https://github.com/black-forest-labs/flux",
+      "license": "FLUX-dev-Non-Commercial",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "與其他 FLUX.1 dev 權重同屬非商業授權，不可用來產出上架商品。 模型卡可能要先接受條款才看得到全文，下載前請再核對。\n"
+    },
+    {
+      "id": "flux.1-redux-dev",
+      "name": "FLUX.1 Redux dev",
+      "kind": "model",
+      "parameters": "12B",
+      "roles": [
+        "image_generation"
+      ],
+      "huggingface": "black-forest-labs/FLUX.1-Redux-dev",
+      "github": "https://github.com/black-forest-labs/flux",
+      "license": "FLUX-dev-Non-Commercial",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "由參考圖產生變體。不可用於商業圖庫或付費下載包。"
+    },
+    {
+      "id": "gemma-2-27b-it",
+      "name": "Gemma 2 27B Instruct",
+      "kind": "model",
+      "parameters": "27B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "google/gemma-2-27b-it",
+      "license": "Gemma-Terms",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 18,
+      "notes": "Gemma 2 的較大指令權重。商用前須接受 Gemma 條款中的禁止用途。"
+    },
+    {
+      "id": "gemma-2-2b-it",
+      "name": "Gemma 2 2B Instruct",
+      "kind": "model",
+      "parameters": "2B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "google/gemma-2-2b-it",
+      "license": "Gemma-Terms",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 4,
+      "notes": "Gemma 2 最小的指令權重，授權仍是 Gemma 條款，不是 Apache。沒有視覺輸入。"
+    },
+    {
+      "id": "gemma-2-9b-it",
+      "name": "Gemma 2 9B Instruct",
+      "kind": "model",
+      "parameters": "9B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "google/gemma-2-9b-it",
+      "license": "Gemma-Terms",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 8,
+      "notes": "Gemma 2 使用 Gemma 條款，不是 Apache。Gemma 4 已改為 Apache，商業文字潤飾請優先用後者。 Gemma 2 沒有視覺輸入。\n"
+    },
+    {
+      "id": "hunyuan-video",
+      "name": "HunyuanVideo",
+      "kind": "model",
+      "parameters": "13B",
+      "roles": [
+        "video_generation"
+      ],
+      "huggingface": "tencent/HunyuanVideo",
+      "github": "https://github.com/Tencent-Hunyuan/HunyuanVideo",
+      "license": "Tencent-Hunyuan-Community",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 48,
+      "notes": "騰訊混元的影片生成權重。社群授權常有使用者規模或地區條件，不是 Apache。 產生的旅行短片在確認條款前不要發布或販售。\n"
+    },
+    {
+      "id": "jina-clip-v2",
+      "name": "Jina CLIP v2",
+      "kind": "model",
+      "parameters": "ViT",
+      "roles": [
+        "image_embedding"
+      ],
+      "huggingface": "jinaai/jina-clip-v2",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "notes": "多語圖文特徵不錯，但權重為非商業授權。販售或商業帳號不要使用。第一代 jina-clip-v1 是 Apache-2.0，不要把兩者看成同一份授權。"
+    },
+    {
+      "id": "jina-embeddings-v3",
+      "name": "Jina Embeddings v3",
+      "kind": "model",
+      "parameters": "570M",
+      "roles": [
+        "text_embedding"
+      ],
+      "huggingface": "jinaai/jina-embeddings-v3",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "notes": "多語文字向量，可實驗文案搜尋。商業圖庫索引請改用 Apache 授權的模型。"
+    },
+    {
+      "id": "llama-3.1-8b-instruct",
+      "name": "Llama 3.1 8B Instruct",
+      "kind": "model",
+      "parameters": "8B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "meta-llama/Llama-3.1-8B-Instruct",
+      "github": "https://github.com/meta-llama/llama-models",
+      "license": "Llama-3.1-Community",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 8,
+      "notes": "其他 Llama 3.1 尺寸沿用同一份社群授權，此處不逐一重複。 它是純文字模型，不能取代視覺描述。\n"
+    },
+    {
+      "id": "llama-3.2-11b-vision",
+      "name": "Llama 3.2 11B Vision Instruct",
+      "kind": "model",
+      "parameters": "11B",
+      "roles": [
+        "vision_language"
+      ],
+      "huggingface": "meta-llama/Llama-3.2-11B-Vision-Instruct",
+      "github": "https://github.com/meta-llama/llama-models",
+      "license": "Llama-3.2-Community",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 12,
+      "notes": "社群授權在月活用戶門檻內或可商用，但附有使用政策與地區條款，不是 Apache。 預設商品與公開服務不要用。下載通常還要在 Hugging Face 接受授權。\n"
+    },
+    {
+      "id": "llama-3.2-90b-vision",
+      "name": "Llama 3.2 90B Vision Instruct",
+      "kind": "model",
+      "parameters": "90B",
+      "roles": [
+        "vision_language"
+      ],
+      "huggingface": "meta-llama/Llama-3.2-90B-Vision-Instruct",
+      "github": "https://github.com/meta-llama/llama-models",
+      "license": "Llama-3.2-Community",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 48,
+      "notes": "大型視覺 Llama。授權條件與 11B 相同，硬體需求高，只適合作對照實驗。"
+    },
+    {
+      "id": "musicgen-large",
+      "name": "MusicGen large",
+      "kind": "model",
+      "parameters": "3.3B",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "facebook/musicgen-large",
+      "github": "https://github.com/facebookresearch/audiocraft",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "MusicGen 大型權重，不可用於商業帳號配樂或付費下載。"
+    },
+    {
+      "id": "musicgen-medium",
+      "name": "MusicGen medium",
+      "kind": "model",
+      "parameters": "1.5B",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "facebook/musicgen-medium",
+      "github": "https://github.com/facebookresearch/audiocraft",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "程式碼為 MIT，權重為 CC-BY-NC-4.0。不可用於販售產品或商業帳號的配樂。 本專案不把生成音樂放進草稿或商品。\n"
+    },
+    {
+      "id": "musicgen-melody",
+      "name": "MusicGen melody",
+      "kind": "model",
+      "parameters": "1.5B",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "facebook/musicgen-melody",
+      "github": "https://github.com/facebookresearch/audiocraft",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "可依旋律條件生成。不要用來改寫或搭配要販售的旅行影片。"
+    },
+    {
+      "id": "musicgen-small",
+      "name": "MusicGen small",
+      "kind": "model",
+      "parameters": "300M",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "facebook/musicgen-small",
+      "github": "https://github.com/facebookresearch/audiocraft",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "notes": "MusicGen 小型權重。體積較小並不改變非商業授權。"
+    },
+    {
+      "id": "musicgen-stereo-large",
+      "name": "MusicGen stereo large",
+      "kind": "model",
+      "parameters": "3.3B",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "facebook/musicgen-stereo-large",
+      "github": "https://github.com/facebookresearch/audiocraft",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "立體聲大型 MusicGen。授權與單聲道版本相同。"
+    },
+    {
+      "id": "musicgen-stereo-medium",
+      "name": "MusicGen stereo medium",
+      "kind": "model",
+      "parameters": "1.5B",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "facebook/musicgen-stereo-medium",
+      "github": "https://github.com/facebookresearch/audiocraft",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "立體聲 MusicGen。權重為非商業授權，不可配進要販售的影片。"
+    },
+    {
+      "id": "openpose",
+      "name": "OpenPose",
+      "kind": "tool",
+      "roles": [
+        "pose"
+      ],
+      "github": "https://github.com/CMU-Perceptual-Computing-Lab/openpose",
+      "license": "CMU-OpenPose",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "none",
+      "notes": "估計人體姿態，可用來事後分析構圖。商業使用需要另行取得授權。 禁止用來辨識身分或建立人物資料庫。\n"
+    },
+    {
+      "id": "paligemma-3b-mix-224",
+      "name": "PaliGemma 3B mix 224",
+      "kind": "model",
+      "parameters": "3B",
+      "roles": [
+        "vision_language"
+      ],
+      "huggingface": "google/paligemma-3b-mix-224",
+      "github": "https://github.com/google-research/big_vision",
+      "license": "Gemma-Terms",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "輕量視覺語言模型，授權跟隨 Gemma 條款。不是目前描述流程的預設模型。"
+    },
+    {
+      "id": "paligemma2-3b-mix-224",
+      "name": "PaliGemma 2 3B mix 224",
+      "kind": "model",
+      "parameters": "3B",
+      "roles": [
+        "vision_language"
+      ],
+      "huggingface": "google/paligemma2-3b-mix-224",
+      "github": "https://github.com/google-research/big_vision",
+      "license": "Gemma-Terms",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "PaliGemma 第二代。適合低顯存實驗，正式商用前改看 Gemma 條款。"
+    },
+    {
+      "id": "rmbg-1.4",
+      "name": "BRIA RMBG 1.4",
+      "kind": "model",
+      "parameters": "segmentation",
+      "roles": [
+        "matting"
+      ],
+      "huggingface": "briaai/RMBG-1.4",
+      "license": "bria-rmbg-1.4",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 4,
+      "notes": "模型卡寫明此權重供非商業使用，並描述為非商業的 Creative Commons 授權。 商業去背需要另向 BRIA 取得合約。開放權重的去背請改用清單中的 BiRefNet。\n"
+    },
+    {
+      "id": "sd3-medium",
+      "name": "Stable Diffusion 3 Medium",
+      "kind": "model",
+      "parameters": "2B",
+      "roles": [
+        "image_generation"
+      ],
+      "huggingface": "stabilityai/stable-diffusion-3-medium",
+      "license": "Stability-Non-Commercial-Research",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 12,
+      "notes": "此權重以 Stability 非商業研究授權釋出，與後來可在營收門檻內商用的 3.5 不同。 請以模型卡為準；預設只作畫質實驗。\n"
+    },
+    {
+      "id": "sd3.5-large",
+      "name": "Stable Diffusion 3.5 Large",
+      "kind": "model",
+      "parameters": "8B",
+      "roles": [
+        "image_generation"
+      ],
+      "huggingface": "stabilityai/stable-diffusion-3.5-large",
+      "license": "Stability-AI-Community",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "研究與非商業可使用。商業使用通常須登記，且年收入超過 100 萬美元時授權終止。 在確認登記與營收條件前，不要用於販售。\n"
+    },
+    {
+      "id": "sd3.5-large-turbo",
+      "name": "Stable Diffusion 3.5 Large Turbo",
+      "kind": "model",
+      "parameters": "8B",
+      "roles": [
+        "image_generation"
+      ],
+      "huggingface": "stabilityai/stable-diffusion-3.5-large-turbo",
+      "license": "Stability-AI-Community",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 24,
+      "notes": "3.5 Large 的少步數版本，社群授權條件相同。"
+    },
+    {
+      "id": "sd3.5-medium",
+      "name": "Stable Diffusion 3.5 Medium",
+      "kind": "model",
+      "parameters": "2.5B",
+      "roles": [
+        "image_generation"
+      ],
+      "huggingface": "stabilityai/stable-diffusion-3.5-medium",
+      "license": "Stability-AI-Community",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 12,
+      "notes": "較容易放進單張消費級顯示卡，但商用條件與 3.5 Large 相同。"
+    },
+    {
+      "id": "sdxl-turbo",
+      "name": "SDXL Turbo",
+      "kind": "model",
+      "parameters": "SDXL",
+      "roles": [
+        "image_generation"
+      ],
+      "huggingface": "stabilityai/sdxl-turbo",
+      "github": "https://github.com/Stability-AI/generative-models",
+      "license": "Stability-AI-Non-Commercial-Community",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "SDXL 本體多為 OpenRAIL，可在使用限制下商用，因此不把本體收成不可商用。 Turbo 的授權檔名稱是非商業社群授權，模型卡又請商業使用者另看 Stability 的授權。 在你讀過並符合那份商業授權之前，不要用來製作販售商品。\n"
+    },
+    {
+      "id": "solar-10.7b-instruct",
+      "name": "SOLAR 10.7B Instruct",
+      "kind": "model",
+      "parameters": "10.7B",
+      "roles": [
+        "text_generation"
+      ],
+      "huggingface": "upstage/SOLAR-10.7B-Instruct-v1.0",
+      "license": "CC-BY-NC-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "openai-chat",
+      "min_vram_gb_estimate": 12,
+      "notes": "英文指令模型。非商業授權，不要接進對外的文案服務。"
+    },
+    {
+      "id": "stable-audio-open-1.0",
+      "name": "Stable Audio Open 1.0",
+      "kind": "model",
+      "parameters": "DiT",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "stabilityai/stable-audio-open-1.0",
+      "license": "Stability-AI-Community",
+      "commercial_use": "conditional",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "Stability AI Community License 對研究、非商業，以及低於其營收門檻的商業使用有不同條件。 預設不啟用。若日後要為影片配環境聲，先讀完該授權，並在商品頁揭露合成音訊。\n"
+    },
+    {
+      "id": "stable-cascade",
+      "name": "Stable Cascade",
+      "kind": "model",
+      "parameters": "Würstchen",
+      "roles": [
+        "image_generation"
+      ],
+      "huggingface": "stabilityai/stable-cascade",
+      "github": "https://github.com/Stability-AI/StableCascade",
+      "license": "Stability-Non-Commercial-Research",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "研究用文生圖模型。上架商品前請改用授權允許商用的模型，並再核對此模型卡是否改版。"
+    },
+    {
+      "id": "stable-video-diffusion",
+      "name": "Stable Video Diffusion",
+      "kind": "model",
+      "parameters": "2B",
+      "roles": [
+        "video_generation"
+      ],
+      "huggingface": "stabilityai/stable-video-diffusion-img2vid",
+      "github": "https://github.com/Stability-AI/generative-models",
+      "license": "Stability-Non-Commercial-Research",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "由靜態照片產生短片。非商業研究授權，不可把生成影片放進商業帳號或商品。"
+    },
+    {
+      "id": "stable-video-diffusion-xt",
+      "name": "Stable Video Diffusion XT",
+      "kind": "model",
+      "parameters": "2B",
+      "roles": [
+        "video_generation"
+      ],
+      "huggingface": "stabilityai/stable-video-diffusion-img2vid-xt",
+      "github": "https://github.com/Stability-AI/generative-models",
+      "license": "Stability-Non-Commercial-Research",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "SVD 的較長影格版本，授權與標準 SVD 相同。"
+    },
+    {
+      "id": "stable-video-diffusion-xt-1-1",
+      "name": "Stable Video Diffusion XT 1.1",
+      "kind": "model",
+      "parameters": "2B",
+      "roles": [
+        "video_generation"
+      ],
+      "huggingface": "stabilityai/stable-video-diffusion-img2vid-xt-1-1",
+      "github": "https://github.com/Stability-AI/generative-models",
+      "license": "Stability-Non-Commercial-Research",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "SVD 1.1 權重。模型卡可能需要登入才讀得到授權全文。 在確認授權之前，不要把生成影片放進商業帳號或商品。\n"
+    },
+    {
+      "id": "sv3d",
+      "name": "Stable Video 3D",
+      "kind": "model",
+      "parameters": "SVD",
+      "roles": [
+        "video_generation"
+      ],
+      "huggingface": "stabilityai/sv3d",
+      "github": "https://github.com/Stability-AI/generative-models",
+      "license": "Stability-Non-Commercial-Research",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "由單張圖產生環繞視角。請以模型卡授權為準，預設視為不可商用。"
+    },
+    {
+      "id": "sv4d",
+      "name": "Stable Video 4D",
+      "kind": "model",
+      "parameters": "SVD",
+      "roles": [
+        "video_generation"
+      ],
+      "huggingface": "stabilityai/sv4d",
+      "github": "https://github.com/Stability-AI/generative-models",
+      "license": "Stability-Non-Commercial-Research",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 16,
+      "notes": "由單張圖產生多視角影片。請以模型卡授權為準，預設視為不可商用。"
+    },
+    {
+      "id": "tango",
+      "name": "Tango",
+      "kind": "model",
+      "parameters": "diffusion",
+      "roles": [
+        "audio_generation"
+      ],
+      "huggingface": "declare-lab/tango",
+      "github": "https://github.com/declare-lab/tango",
+      "license": "CC-BY-NC-SA-4.0",
+      "commercial_use": "disallowed",
+      "status": "restricted",
+      "server_api": "custom",
+      "min_vram_gb_estimate": 8,
+      "notes": "文字到音效。非商業授權，且衍生權重通常須以相同方式分享。"
+    }
+  ],
+  "roles": [
+    "aesthetic_quality",
+    "audio_generation",
+    "audio_understanding",
+    "image_editing",
+    "image_embedding",
+    "image_generation",
+    "image_restoration",
+    "matting",
+    "ocr",
+    "pose",
+    "privacy_redaction",
+    "shot_detection",
+    "speech_transcription",
+    "text_embedding",
+    "text_generation",
+    "video_generation",
+    "video_understanding",
+    "vision_language"
+  ],
+  "trips": [
+    {
+      "id": "preview-trip",
+      "assets": 2,
+      "images": 1,
+      "videos": 1,
+      "place": "預覽地點",
+      "captured_from": "2024-04-02T09:30:00+00:00",
+      "captured_to": "2024-04-02T11:05:00+00:00"
+    }
+  ],
+  "updated": "2026-11-06"
+}

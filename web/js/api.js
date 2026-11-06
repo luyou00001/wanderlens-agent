@@ -1,3 +1,5 @@
+let previewSnapshot = null;
+
 export async function getJSON(path) {
   const response = await fetch(path, {
     headers: { Accept: "application/json" },
@@ -17,6 +19,9 @@ export async function getJSON(path) {
 }
 
 export async function asset(id) {
+  if (previewSnapshot) {
+    return previewSnapshot.assets.find((item) => item.id === id) || null;
+  }
   const response = await fetch(`/api/assets/${encodeURIComponent(id)}`, { cache: "no-store" });
   if (response.status === 404) return null;
   const payload = await response.json();
@@ -26,7 +31,21 @@ export async function asset(id) {
   return payload;
 }
 
-export async function loadSnapshot(filters) {
+export async function loadSnapshot(filters, options = {}) {
+  if (options.refresh) previewSnapshot = null;
+  if (!previewSnapshot) {
+    try {
+      const live = await loadLive(filters);
+      return { preview: false, notice: "", ...live };
+    } catch (error) {
+      previewSnapshot = await loadPreview();
+      previewSnapshot.previewError = error.message;
+    }
+  }
+  return applyFilters(previewSnapshot, filters);
+}
+
+async function loadLive(filters) {
   const assetsQuery = new URLSearchParams({ limit: "200" });
   if (filters.libraryQuery) assetsQuery.set("q", filters.libraryQuery);
   const modelsQuery = new URLSearchParams();
@@ -50,5 +69,52 @@ export async function loadSnapshot(filters) {
     modelTotal: models.total || 0,
     roles: models.roles || [],
     trips: trips.trips || [],
+  };
+}
+
+async function loadPreview() {
+  const url = new URL("preview/snapshot.json", document.baseURI);
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) throw new Error("無法讀取預覽資料。");
+  const payload = await response.json();
+  if (!payload || payload.preview !== true || !Array.isArray(payload.assets)) {
+    throw new Error("預覽資料格式不正確。");
+  }
+  return payload;
+}
+
+function applyFilters(snapshot, filters) {
+  const needle = (filters.libraryQuery || "").trim().toLowerCase();
+  const assets = snapshot.assets.filter((item) => {
+    if (!needle) return true;
+    const haystack = [item.id, item.relative_path, item.user_place, item.trip_id, item.summary_zh_hant]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    return haystack.includes(needle);
+  });
+  const query = (filters.modelQuery || "").trim().toLowerCase();
+  const models = snapshot.models.filter((model) => {
+    if (filters.role && !(model.roles || []).includes(filters.role)) return false;
+    if (filters.commercial && model.commercial_use !== filters.commercial) return false;
+    if (!query) return true;
+    const haystack = [model.id, model.name, model.huggingface, model.github, model.notes, ...(model.roles || [])]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    return haystack.includes(query);
+  });
+  return {
+    preview: true,
+    notice: snapshot.notice || "",
+    status: snapshot.status,
+    summary: snapshot.summary,
+    assets,
+    assetTotal: assets.length,
+    models,
+    modelCount: models.length,
+    modelTotal: snapshot.models.length,
+    roles: snapshot.roles || [],
+    trips: snapshot.trips || [],
   };
 }

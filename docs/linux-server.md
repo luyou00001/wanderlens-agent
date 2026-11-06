@@ -109,6 +109,8 @@ wanderlens ui --host 127.0.0.1 --port 8765
 
 容器裡也可以執行 `wanderlens ui`。映像會帶入 `web/`；用 compose 時，這個目錄另外掛載，方便直接改樣式。
 
+不要把這個頁面發佈成公開的 GitHub Pages。個人帳號的私人倉庫一旦開啟 Pages，網址仍會對整個網際網路公開。開發成員要看版面時，請把他們加進倉庫，由他們在本機開啟；你的照片索引不要跟著頁面上傳。
+
 ## 6. 定時清點
 
 可以之後再用 systemd timer 執行 `wanderlens ingest` 與 `wanderlens describe`。請讓它只寫本機索引與草稿，不要在 timer 裡發佈或上傳。

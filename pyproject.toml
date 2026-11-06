@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "wanderlens-agent"
-version = "0.2.0"
+version = "0.2.1"
 description = "在本機把旅行照片與影片整理成待審閱的社群草稿與數位影像包。"
 readme = "README.md"
 requires-python = ">=3.11"

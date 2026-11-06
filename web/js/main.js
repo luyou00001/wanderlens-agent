@@ -1,4 +1,5 @@
 import { loadSnapshot, asset } from "./api.js";
+import { h } from "./dom.js";
 import { STATS, clock } from "./format.js";
 import { renderOverview } from "./views/overview.js";
 import { renderLibrary, renderLibraryResults } from "./views/library.js";
@@ -30,6 +31,8 @@ const state = {
   selectedId: null,
   detail: null,
   error: "",
+  preview: false,
+  notice: "",
   updatedAt: null,
   debounce: 0,
 };
@@ -84,6 +87,11 @@ markNav();
 
 document.querySelector("#refresh").addEventListener("click", () => tick(true));
 document.querySelector("#live-toggle").addEventListener("click", () => {
+  if (state.preview) {
+    state.live = true;
+    tick(true);
+    return;
+  }
   state.live = !state.live;
   renderChrome();
   if (state.live) tick(true);
@@ -98,7 +106,10 @@ async function tick(manual) {
   if (!state.live && !manual) return;
   const previous = state.summary;
   try {
-    const next = await loadSnapshot(state.filters);
+    const next = await loadSnapshot(state.filters, { refresh: manual });
+    state.preview = Boolean(next.preview);
+    state.notice = next.notice || "";
+    if (state.preview) state.live = false;
     const events = diffSummary(previous, next.summary);
     if (events.length) state.events = events.concat(state.events).slice(0, 80);
     state.summary = next.summary;
@@ -149,7 +160,9 @@ function paint() {
 function renderChrome() {
   document.querySelector("#view-title").textContent = TITLES[state.view] || "監控";
   const status = document.querySelector("#status-line");
-  if (state.error) {
+  if (state.preview && state.updatedAt) {
+    status.textContent = `預覽資料 · 尚未連到本機索引 · ${clock(state.updatedAt)}`;
+  } else if (state.error) {
     status.textContent = state.error;
   } else if (state.updatedAt) {
     const provider = !state.status
@@ -164,7 +177,7 @@ function renderChrome() {
   path.textContent = libraryPath;
   path.setAttribute("title", libraryPath);
   document.querySelector("#live-dot").classList.toggle("is-paused", !state.live);
-  document.querySelector("#live-toggle").textContent = state.live ? "暫停更新" : "繼續更新";
+  document.querySelector("#live-toggle").textContent = state.preview ? "改連本機" : state.live ? "暫停更新" : "繼續更新";
 }
 
 function renderStage() {
@@ -175,7 +188,12 @@ function renderStage() {
     models: () => renderModels(state, actions),
     activity: () => renderActivity(state),
   }[state.view];
-  stage.replaceChildren(view());
+  const nodes = [];
+  if (state.preview && state.notice) {
+    nodes.push(h("p", { attrs: { className: "banner", role: "status" }, text: state.notice }));
+  }
+  nodes.push(view());
+  stage.replaceChildren(...nodes);
 }
 
 function refreshResults() {

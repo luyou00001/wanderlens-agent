@@ -89,6 +89,8 @@ def test_monitor_hides_coordinates_and_serves_the_page(tmp_path):
             assert response.read() == b""
         html = page.decode("utf-8")
         assert 'type="module"' in html
+        assert 'src="js/main.js"' in html
+        assert 'href="css/tokens.css"' in html
         assert "data-stage" in html
         assert "22.291667" not in html
 

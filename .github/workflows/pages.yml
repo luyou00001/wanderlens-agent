@@ -1,0 +1,73 @@
+name: 發佈監控頁
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/pages.yml"
+      - "web/**"
+      - "catalog/**"
+      - "src/wanderlens/preview.py"
+      - "scripts/build_monitor_preview.py"
+      - "scripts/ensure_private_pages.py"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.visibility.outputs.deploy }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 產生預覽資料
+        run: |
+          python -m pip install --disable-pip-version-check PyYAML
+          PYTHONPATH=src python scripts/build_monitor_preview.py
+
+      - name: 確認只有倉庫成員能開啟
+        id: visibility
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/ensure_private_pages.py
+
+  deploy:
+    needs: guard
+    if: needs.guard.outputs.deploy == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 產生預覽資料
+        run: |
+          python -m pip install --disable-pip-version-check PyYAML
+          PYTHONPATH=src python scripts/build_monitor_preview.py
+
+      - name: 上傳頁面
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+      - name: 發佈
+        id: deployment
+        uses: actions/deploy-pages@v4
