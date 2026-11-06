@@ -32,11 +32,46 @@ def test_preview_snapshot_matches_catalog_and_hides_coordinates():
     _private_keys(committed)
 
 
-def test_pages_publish_requires_private_visibility():
-    path = repo_root() / "scripts" / "ensure_private_pages.py"
-    spec = importlib.util.spec_from_file_location("ensure_private_pages", path)
+def _preview_guard():
+    path = repo_root() / "scripts" / "ensure_public_preview.py"
+    spec = importlib.util.spec_from_file_location("ensure_public_preview", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    assert module.site_is_private({"public": False, "html_url": "https://example.test"}) is True
-    assert module.site_is_private({"public": True}) is False
-    assert module.site_is_private({"message": "Not Found"}) is False
+    return module
+
+
+def test_public_preview_accepts_the_checked_in_site():
+    module = _preview_guard()
+    module.assert_public_preview(repo_root() / "web")
+
+
+def test_public_preview_rejects_coordinates_tokens_and_media(tmp_path: Path):
+    module = _preview_guard()
+    root = tmp_path / "web"
+    (root / "preview").mkdir(parents=True)
+    (root / "index.html").write_text("<!DOCTYPE html><title>預覽</title>", encoding="utf-8")
+    (root / "preview" / "snapshot.json").write_text(
+        '{"preview": true, "assets": [{"id": "preview-photo", "relative_path": "preview/shore.jpg", "latitude": 25.0}]}',
+        encoding="utf-8",
+    )
+    try:
+        module.assert_public_preview(root)
+    except module.PreviewPublishError as exc:
+        assert "座標" in str(exc)
+    else:
+        raise AssertionError("含座標的預覽頁不應通過。")
+
+    (root / "preview" / "snapshot.json").write_text(
+        '{"preview": true, "assets": [{"id": "preview-photo", "relative_path": "preview/shore.jpg"}]}',
+        encoding="utf-8",
+    )
+    (root / "photo.jpg").write_bytes(b"not-a-real-photo")
+    (root / "monitor.token").write_text("secret-token-value", encoding="utf-8")
+    try:
+        module.assert_public_preview(root)
+    except module.PreviewPublishError as exc:
+        message = str(exc)
+        assert "photo.jpg" in message
+        assert "monitor.token" in message
+    else:
+        raise AssertionError("原檔與通行憑證不應通過。")

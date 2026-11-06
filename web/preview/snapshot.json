@@ -3,7 +3,7 @@
   "notice": "這是預覽版面，不是你的素材庫。照片索引只留在執行 wanderlens ui 的那台機器。",
   "status": {
     "service": "wanderlens-preview",
-    "version": "0.2.1",
+    "version": "0.2.3",
     "library_ready": false,
     "library_error": null,
     "library_path": "預覽資料，不是本機索引",

@@ -10,7 +10,7 @@ on:
       - "catalog/**"
       - "src/wanderlens/preview.py"
       - "scripts/build_monitor_preview.py"
-      - "scripts/ensure_private_pages.py"
+      - "scripts/ensure_public_preview.py"
 
 permissions:
   contents: read
@@ -22,31 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  guard:
-    runs-on: ubuntu-latest
-    outputs:
-      deploy: ${{ steps.visibility.outputs.deploy }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: 產生預覽資料
-        run: |
-          python -m pip install --disable-pip-version-check PyYAML
-          PYTHONPATH=src python scripts/build_monitor_preview.py
-
-      - name: 確認只有倉庫成員能開啟
-        id: visibility
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python scripts/ensure_private_pages.py
-
   deploy:
-    needs: guard
-    if: needs.guard.outputs.deploy == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -62,6 +38,14 @@ jobs:
         run: |
           python -m pip install --disable-pip-version-check PyYAML
           PYTHONPATH=src python scripts/build_monitor_preview.py
+
+      - name: 確認公開頁只有預覽資料
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/ensure_public_preview.py web
+
+      - name: 設定 Pages
+        uses: actions/configure-pages@v5
 
       - name: 上傳頁面
         uses: actions/upload-pages-artifact@v3

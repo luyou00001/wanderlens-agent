@@ -15,7 +15,7 @@
 - `recommended` 只能標在 `commercial_use: allowed`，且目前描述流程真的接得上的項目。授權欄位不是法律意見。
 - 模型服務與整理流程分開。整理流程透過 HTTP 呼叫，不把某一個 CUDA 版本寫進預設依賴。
 - `wanderlens ui` 只提供本機監控。回應不得包含座標，也不得提供素材原檔。`data/monitor.token` 是手機通行憑證，不得提交。
-- 不要把監控頁發佈成公開網站。個人帳號的 GitHub Pages 即使倉庫是私人的也會對網際網路公開；只有能限制成倉庫成員時才可發佈。
+- 公開的 GitHub Pages 只能放 `web/` 預覽頁。不得把座標、`data/monitor.token`、素材原檔或真實索引放進該網站。
 
 ## 常用指令
 
