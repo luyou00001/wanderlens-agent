@@ -67,21 +67,29 @@ def assert_public_preview(root: Path) -> None:
         raise PreviewPublishError("\n".join(errors))
 
 
-def enable_public_pages() -> None:
+def require_pages_site() -> None:
     token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
     repo = os.environ.get("GITHUB_REPOSITORY")
     if not token or not repo:
-        print("沒有 GitHub 權杖，略過 Pages 設定，改由部署步驟建立網站。")
+        print("沒有 GitHub 權杖，略過 Pages 是否已開啟的檢查。")
         return
-    status, payload = _request(token, repo, "POST", {"build_type": "workflow", "public": True})
-    if status in {409, 422}:
-        status, payload = _request(token, repo, "PUT", {"build_type": "workflow", "public": True})
-    if status in {200, 201, 204} and isinstance(payload, dict) and payload.get("public") is True:
-        print(f"已把 Pages 設成公開：{payload.get('html_url', '')}")
+    status, payload = _request(token, repo, "GET", None)
+    if status == 200:
+        url = payload.get("html_url", "") if isinstance(payload, dict) else ""
+        print(f"Pages 已開啟：{url}")
         return
-    print(f"無法用 API 預先建立 Pages（HTTP {status}）。將改由 GitHub Actions 部署。")
+    owner, _, name = repo.partition("/")
+    url = f"https://{owner}.github.io/{name}/"
+    print(
+        "Pages 尚未開啟，這次沒有發佈。\n"
+        "GitHub 不允許 Actions 內建權杖第一次建立 Pages。\n"
+        "請到倉庫 Settings → Pages，Build and deployment 的 Source 選 GitHub Actions，然後重跑「發佈監控頁」。\n"
+        f"完成後的公開網址是 {url}\n"
+        "若設定頁寫著私人倉庫不能使用 Pages，這個帳號的方案不包含該功能；需要升級方案，或把倉庫改成公開。這次沒有改倉庫可見性。"
+    )
     if payload:
         print(json.dumps(payload, ensure_ascii=False)[:800])
+    sys.exit(1)
 
 
 def _check_json(path: Path, relative: Path, errors: list[str]) -> None:
@@ -148,7 +156,7 @@ def main() -> None:
         print(exc, file=sys.stderr)
         sys.exit(1)
     print(f"公開頁只含預覽資料：{root}")
-    enable_public_pages()
+    require_pages_site()
 
 
 if __name__ == "__main__":

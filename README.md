@@ -95,9 +95,13 @@ iPhone 網址裡的 `k` 是通行憑證。不要轉傳，也不要提交 `data/m
 
 ### 公開預覽網址
 
-推上 `main` 之後，GitHub Actions 會把 `web/` 發佈成公開網頁。知道連結的人都能打開，不需要倉庫權限。頁面上只有預覽素材與模型清單，不是你的照片，也沒有座標。真正的索引仍只在執行 `wanderlens ui` 的那台機器。
+這個網址會公開。知道連結的人都能打開，不需要倉庫權限。頁面上只有預覽素材與模型清單，不是你的照片，也沒有座標。真正的索引仍只在執行 `wanderlens ui` 的那台機器。
 
-網址形式為 `https://<帳號>.github.io/wanderlens-agent/`。手機用瀏覽器直接點開即可，也可以加入主畫面。
+GitHub 不允許 Actions 內建權杖第一次建立 Pages。請到倉庫的 Settings → Pages，把 Source 選成 GitHub Actions，再到 Actions 重跑「發佈監控頁」。完成後的網址是：
+
+https://luyou00001.github.io/wanderlens-agent/
+
+手機用瀏覽器直接點開即可，也可以加入主畫面。若設定頁寫著私人倉庫不能使用 Pages，代表目前的方案不包含這項功能；要嘛升級方案，要嘛把倉庫改成公開。程式沒有改倉庫的可見性。
 
 ## 接上本機模型
 
