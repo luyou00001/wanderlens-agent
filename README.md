@@ -18,7 +18,9 @@ Wanderlens Agent 在你自己的 Linux 伺服器上，把多年累積的旅行�
 ```text
 assets_vault/inbox/          放入或掛載原始照片與影片
 catalog/open_source_models.yaml
+catalog/extra/                 不可直接用於販售的開放權重
 config/prompts/vision_json.txt
+web/                           本機監控頁
 config/settings.example.yaml
 src/wanderlens/              清點、描述、草稿、匯出
 data/library/                本機索引，含私人 EXIF，不提交
@@ -65,6 +67,18 @@ wanderlens bundle
 
 `bundle` 只寫出本機目錄，不會上傳到任何商店。
 
+## 監控頁
+
+索引建立之後，可以開一個只在本機閱讀的頁面：
+
+```bash
+wanderlens ui
+```
+
+瀏覽器打開終端機印出的網址，預設是 <http://127.0.0.1:8765/>。頁面大約每 3 秒重讀一次索引，用來查看清點、描述、草稿與模型清單。它不提供原始照片，也不顯示座標。
+
+樣式集中在 `web/css/tokens.css`。之後若要調整版面，先看 [web/DESIGN.md](web/DESIGN.md)。監控頁沒有登入，請保持預設的 `127.0.0.1`，不要綁到所有網路介面。
+
 ## 接上本機模型
 
 模型服務與這個專案分成兩個環境，中間只用 HTTP。CUDA 與權重的變動就不會綁住整理流程。
@@ -75,7 +89,7 @@ cp .env.example .env
 wanderlens describe --force --limit 10
 ```
 
-伺服器安裝、顯存與啟動方式見 [docs/linux-server.md](docs/linux-server.md)。模型怎麼選見 [docs/models.md](docs/models.md)。完整清單是 [catalog/open_source_models.yaml](catalog/open_source_models.yaml)，用 `wanderlens models list` 與 `wanderlens models show <id>` 查閱。
+伺服器安裝、顯存與啟動方式見 [docs/linux-server.md](docs/linux-server.md)。模型怎麼選見 [docs/models.md](docs/models.md)。可商用的項目在 [catalog/open_source_models.yaml](catalog/open_source_models.yaml)，不可直接用於販售的項目在 [catalog/extra/](catalog/extra/)。用 `wanderlens models list` 與 `wanderlens models show <id>` 查閱。
 
 ## 權利與人物
 

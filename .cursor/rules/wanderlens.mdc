@@ -7,7 +7,8 @@ alwaysApply: true
 
 - 使用者面向的說明使用繁體中文書面語。
 - 原始照片、影片、模型權重、`.env` 與 `config/settings.yaml` 不得提交。
-- 新模型只寫進 `catalog/open_source_models.yaml`。描述步驟只透過 `heuristic` 與 OpenAI 相容端點。
+- 新模型只寫進 `catalog/open_source_models.yaml`；不可直接商用的權重寫進 `catalog/extra/`。描述步驟只透過 `heuristic` 與 OpenAI 相容端點。
+- 監控頁不得送出座標或素材原檔。
 - 技術預檢不得編成看起來像看過畫面的文案。
 - 公開匯出必須移除定位資訊，且不得把座標寫進社群草稿或販售清單。
 - 不要由像素推測拍攝地點，也不要建立人臉身分庫。人臉相關程式只可做遮罩。

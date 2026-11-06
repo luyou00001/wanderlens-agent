@@ -9,6 +9,7 @@ services:
       - ./catalog:/workspace/catalog
       - ./config:/workspace/config
       - ./src:/workspace/src
+      - ./web:/workspace/web
     environment:
       PYTHONPATH: /workspace/src
     entrypoint: ["python", "-m", "wanderlens"]

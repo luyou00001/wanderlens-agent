@@ -1,4 +1,4 @@
-.PHONY: install test models
+.PHONY: install test models ui
 
 install:
 	python3 -m venv .venv
@@ -10,3 +10,6 @@ test:
 
 models:
 	python3 -m wanderlens models list
+
+ui:
+	python3 -m wanderlens ui

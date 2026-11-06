@@ -13,6 +13,7 @@ COPY pyproject.toml README.md LICENSE ./
 COPY src ./src
 COPY catalog ./catalog
 COPY config ./config
+COPY web ./web
 RUN pip install --no-cache-dir .
 
 ENTRYPOINT ["wanderlens"]

@@ -1,9 +1,10 @@
 schema_version: 1
-updated: "2026-11-05"
+updated: "2026-11-06"
 license_disclaimer: >
   commercial_use 只是整理模型卡與專案授權時的閱讀筆記，不是法律意見。
   正式販售或公開發佈前，請再核對當時的模型卡、權重授權與使用條款。
   顯存數字是單張消費級顯示卡的量級估計，實際取決於量化、上下文長度與影像大小。
+  不可自由商用的模型收在 catalog/extra/，狀態為 restricted，不會進入預設描述流程。
 models:
   - id: qwen3.5-9b
     name: Qwen3.5-9B
@@ -389,7 +390,20 @@ models:
     status: restricted
     server_api: custom
     min_vram_gb_estimate: 4
-    notes: 多語圖文特徵不錯，但權重為非商業授權。販售或商業帳號不要使用。
+    notes: 多語圖文特徵不錯，但權重為非商業授權。販售或商業帳號不要使用。第一代 jina-clip-v1 是 Apache-2.0，不要把兩者看成同一份授權。
+
+  - id: jina-clip-v1
+    name: Jina CLIP v1
+    kind: model
+    parameters: ViT
+    roles: [image_embedding]
+    huggingface: jinaai/jina-clip-v1
+    license: Apache-2.0
+    commercial_use: allowed
+    status: catalog-only
+    server_api: custom
+    min_vram_gb_estimate: 4
+    notes: 第一代權重為 Apache-2.0，與不可商用的 v2 不同。尚未接入圖庫檢索。
 
   - id: q-align
     name: Q-Align / OneAlign

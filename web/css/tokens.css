@@ -1,0 +1,50 @@
+/*
+  Wanderlens 監控頁的視覺變數。
+  之後調整顏色、字體、間距與圓角時，優先只改這個檔。
+  其他樣式表請使用 var(--token)，不要再寫色碼。
+*/
+
+:root {
+  --color-bg: #12100e;
+  --color-bg-raised: #1c1916;
+  --color-bg-inset: #0c0b0a;
+  --color-line: rgba(243, 236, 224, 0.12);
+  --color-line-strong: rgba(243, 236, 224, 0.28);
+  --color-ink: #f3eee6;
+  --color-ink-soft: #c8beb2;
+  --color-ink-faint: #8d847a;
+  --color-accent: #e0a15a;
+  --color-accent-ink: #2a1c0c;
+  --color-accent-soft: rgba(224, 161, 90, 0.16);
+  --color-positive: #8eae78;
+  --color-positive-soft: rgba(142, 174, 120, 0.18);
+  --color-danger: #c46a58;
+  --color-danger-soft: rgba(196, 106, 88, 0.18);
+  --color-info: #8aa4b5;
+  --color-info-soft: rgba(138, 164, 181, 0.18);
+  --color-shadow: rgba(0, 0, 0, 0.35);
+
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Songti TC", "Noto Serif CJK TC", serif;
+  --font-ui: "Segoe UI", "PingFang TC", "Noto Sans CJK TC", "Noto Sans TC", sans-serif;
+  --font-mono: "IBM Plex Mono", "Source Code Pro", ui-monospace, monospace;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --radius-s: 4px;
+  --radius-m: 10px;
+  --radius-l: 16px;
+
+  --shadow-panel: 0 18px 40px var(--color-shadow);
+  --rail-width: 232px;
+  --content-max: 1480px;
+  --text-sm: 0.84rem;
+  --text-md: 1rem;
+  --text-lg: 1.35rem;
+  --text-xl: 2.4rem;
+}

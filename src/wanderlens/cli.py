@@ -12,6 +12,7 @@ from wanderlens.catalog import find_model, load_catalog, select_models
 from wanderlens.commerce import export_bundle
 from wanderlens.config import resolve_settings
 from wanderlens.errors import WanderlensError
+from wanderlens.monitor import serve_monitor
 from wanderlens.paths import repo_root
 from wanderlens.pipeline import describe, draft, ingest, iter_assets, set_place, set_publish, set_sale
 from wanderlens.publishing import export_posts
@@ -105,6 +106,11 @@ def build_parser() -> argparse.ArgumentParser:
     listing_assets.add_argument("--limit", type=int, default=50)
     listing_assets.add_argument("--all", action="store_true", dest="list_all")
     listing_assets.set_defaults(handler=handle_list)
+
+    ui = commands.add_parser("ui", parents=[common], help="開啟本機監控頁。")
+    ui.add_argument("--host", default="127.0.0.1", help="預設只聽 127.0.0.1。")
+    ui.add_argument("--port", type=int, default=8765)
+    ui.set_defaults(handler=handle_ui)
     return parser
 
 
@@ -224,6 +230,14 @@ def handle_bundle(args: argparse.Namespace) -> int:
         allow_sensitive=args.allow_sensitive,
     )
     print(f"已寫出草稿包：{output}")
+    return 0
+
+
+def handle_ui(args: argparse.Namespace) -> int:
+    host = (args.host or "").strip()
+    if not host:
+        raise WanderlensError("請提供 --host。")
+    serve_monitor(_settings(args), host=host, port=args.port)
     return 0
 
 

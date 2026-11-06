@@ -99,6 +99,16 @@ docker compose run --rm pipeline describe --limit 10
 
 顯示卡留給模型服務即可，不必把整個整理容器改成 GPU 映像。
 
-## 5. 定時清點
+## 5. 打開監控頁
+
+```bash
+wanderlens ui --host 127.0.0.1 --port 8765
+```
+
+用瀏覽器打開終端機印出的網址。頁面會重讀本機索引，不提供原始照片，也不顯示座標。它沒有登入。不要加 `--host 0.0.0.0`，否則同一區網看得到檔名與描述。
+
+容器裡也可以執行 `wanderlens ui`。映像會帶入 `web/`；用 compose 時，這個目錄另外掛載，方便直接改樣式。
+
+## 6. 定時清點
 
 可以之後再用 systemd timer 執行 `wanderlens ingest` 與 `wanderlens describe`。請讓它只寫本機索引與草稿，不要在 timer 裡發佈或上傳。

@@ -21,6 +21,11 @@ data/library/library.json
                  │
                  ▼
            wanderlens bundle           尚未上架的數位影像草稿包
+
+wanderlens ui
+        │
+        ▼
+ 本機監控頁（web/）          只讀摘要，不讀原檔，不送座標
 ```
 
 ## 模組
@@ -34,7 +39,9 @@ data/library/library.json
 | `drafts.py` | 產生三種平台、繁體中文與英文的草稿 |
 | `publishing.py` | 寫出待審閱 Markdown 與 JSON |
 | `commerce.py` | 決定哪些靜態影像可以進入草稿包 |
-| `catalog.py` | 讀取並檢查開源模型清單 |
+| `catalog.py` | 讀取並檢查開源模型清單，包含 `catalog/extra/` |
+| `monitor.py` | 本機監控頁與不含座標的讀取介面 |
+| `web/` | 監控頁的 HTML、CSS 與 JavaScript |
 
 描述模型只透過兩種提供者接上：`heuristic` 與 `openai`。Florence-2、美學分數、放大、去背、語音與鏡頭切分都先列在清單，等對應的適配器有明確用途時再寫。這樣換模型時，通常只改服務端的模型名稱。
 

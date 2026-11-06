@@ -1,6 +1,6 @@
 # 開源模型清單
 
-機器可讀的清單是 [catalog/open_source_models.yaml](../catalog/open_source_models.yaml)。新增模型時只改這個檔，並維持下列約束：
+機器可讀的清單是 [catalog/open_source_models.yaml](../catalog/open_source_models.yaml)。不可自由商用或附帶條件、不該直接拿去販售的權重另收在 [catalog/extra/noncommercial.yaml](../catalog/extra/noncommercial.yaml)，載入時會併入。新增模型時維持下列約束：
 
 - `id` 使用小寫、數字與連字號。
 - `commercial_use` 只能是 `allowed`、`disallowed`、`conditional` 或 `unknown`。
@@ -27,12 +27,17 @@ wanderlens models show qwen3.5-9b
 | `shot_detection` | 把長片切成鏡頭 |
 | `speech_transcription` | 轉錄真正的人聲 |
 | `image_embedding` | 以圖找圖，或以文字找圖 |
+| `text_embedding` | 搜尋文案；商業索引請用可商用模型 |
 | `aesthetic_quality` | 技術品質或美學分數 |
 | `image_restoration` | 放大或修復已入選的照片 |
+| `image_generation` | 由文字產生影像；預設不進入商品 |
+| `image_editing` | 依條件重繪或補畫既有照片 |
+| `video_generation` | 由影像產生影片；預設不進入商品 |
 | `matting` | 去背 |
 | `text_generation` | 純文字潤飾，不能拿來描述照片 |
 | `audio_generation` | 生成聲音；預設不進入商品 |
 | `ocr` | 讀取路標、菜單、車票 |
+| `pose` | 估計姿態與構圖，不用來辨識身分 |
 | `privacy_redaction` | 只用於遮罩，不用於辨識身分 |
 
 ## 建議的使用順序
@@ -55,6 +60,21 @@ wanderlens models show qwen3.5-9b
 4. 圖庫索引優先比較 `siglip2-so400m`（可用文字搜尋）與 `dinov2-large`（只看構圖與外觀）。
 5. 有人說話的影片再用 `whisper-large-v3-turbo`。風聲不必強行轉錄。
 
-`jina-clip-v2` 與 `musicgen-medium` 的權重不可用於商業用途。`stable-audio-open-1.0` 有額外商業條件，預設不使用。`q-align` 與 `pyiqa` 裡各個分數模型的授權並不統一，在確認之前只可作內部實驗。
+`jina-clip-v2` 與 `musicgen-medium` 的權重不可用於商業用途。`jina-clip-v1` 是 Apache-2.0，不要把兩代看成同一份授權。`stable-audio-open-1.0` 有額外商業條件，預設不使用。`q-align` 與 `pyiqa` 裡各個分數模型的授權並不統一，在確認之前只可作內部實驗。
+
+## 不可自由商用
+
+`catalog/extra/noncommercial.yaml` 收的是不能直接用於販售，或還要另外確認條款的權重。狀態都是 `restricted`，不會變成預設描述模型。
+
+```bash
+wanderlens models list --commercial disallowed
+wanderlens models list --commercial conditional
+```
+
+這些權重可以留在伺服器上做授權允許的實驗。不要用它們產生要上架的圖片、影片、配樂或文案，也不要放進對外服務。附條件的項目，例如 Stability 社群授權、Llama 社群授權與 Gemma 條款，在你確認條件之前同樣不要進入商品。
+
+SDXL 本體與 Stable Diffusion 1.x 多為 OpenRAIL，有使用限制，但不是這份非商用清單的對象。`sdxl-turbo` 的公開授權檔與商業使用方式不同，因此單獨收錄，使用前要再讀模型卡。
+
+FLUX.1 dev 系列的權重本身不可用於商業生產。不要用它們產出上架商品。清單裡的授權筆記不是法律意見。
 
 Florence-2、InternVideo3、Whisper、Real-ESRGAN 與 BiRefNet 已列入清單，但這個版本還沒有各自的適配器。視覺描述目前不需要把它們寫死在程式裡。

@@ -13,13 +13,18 @@ ROLES = {
     "shot_detection",
     "speech_transcription",
     "image_embedding",
+    "text_embedding",
     "aesthetic_quality",
     "image_restoration",
+    "image_generation",
+    "image_editing",
+    "video_generation",
     "matting",
     "text_generation",
     "audio_generation",
     "audio_understanding",
     "ocr",
+    "pose",
     "privacy_redaction",
 }
 KINDS = {"model", "tool", "runtime"}
@@ -32,12 +37,16 @@ STATUS_ORDER = {"recommended": 0, "alternate": 1, "catalog-only": 2, "restricted
 
 def load_catalog(path=None) -> dict:
     selected = path or catalog_path()
-    try:
-        data = yaml.safe_load(selected.read_text(encoding="utf-8"))
-    except OSError as exc:
-        raise WanderlensError(f"無法讀取模型清單：{selected}") from exc
-    if not isinstance(data, dict) or data.get("schema_version") != 1:
-        raise WanderlensError("模型清單的版本無法讀取。")
+    data = _read_catalog_document(selected)
+    if path is None:
+        extra_root = selected.parent / "extra"
+        if extra_root.is_dir():
+            for extra in sorted(extra_root.glob("*.yaml")):
+                extra_data = _read_yaml(extra)
+                extra_models = extra_data.get("models") if isinstance(extra_data, dict) else None
+                if not isinstance(extra_models, list):
+                    raise WanderlensError(f"附加清單必須包含 models：{extra}")
+                data["models"].extend(extra_models)
     models = data.get("models")
     if not isinstance(models, list) or not models:
         raise WanderlensError("模型清單是空的。")
@@ -45,6 +54,25 @@ def load_catalog(path=None) -> dict:
     for model in models:
         _validate_model(model, seen)
     return data
+
+
+def _read_catalog_document(path) -> dict:
+    data = _read_yaml(path)
+    if not isinstance(data, dict) or data.get("schema_version") != 1:
+        raise WanderlensError("模型清單的版本無法讀取。")
+    if not isinstance(data.get("models"), list):
+        raise WanderlensError("模型清單缺少 models。")
+    return data
+
+
+def _read_yaml(path) -> dict:
+    try:
+        loaded = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except OSError as exc:
+        raise WanderlensError(f"無法讀取模型清單：{path}") from exc
+    if not isinstance(loaded, dict):
+        raise WanderlensError(f"模型清單格式不正確：{path}")
+    return loaded
 
 
 def select_models(
